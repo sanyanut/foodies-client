@@ -1,0 +1,16 @@
+# Local development for the Foodies frontend (independent container).
+# The backend + database live in the foodies-api repo's own compose file.
+services:
+  client:
+    build: .
+    container_name: foodies-client
+    ports:
+      - "5173:5173"
+    environment:
+      # Points the browser app at the API. Override as needed.
+      - VITE_API_URL=${VITE_API_URL:-http://localhost:3000}
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev
