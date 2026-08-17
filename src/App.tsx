@@ -14,9 +14,6 @@ const statusStyles: Record<string, string> = {
   down: "bg-red-100 text-red-700",
 };
 
-// Minimal starter screen. It exercises the whole stack — Tailwind (styling),
-// Redux Toolkit + thunk (backend health check), and react-hook-form (form) —
-// so the scaffold is verifiably working. Real pages replace this later.
 export default function App() {
   const dispatch = useAppDispatch();
   const { status, lastCheckedAt } = useAppSelector((state) => state.health);
