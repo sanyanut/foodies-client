@@ -1,1 +1,0 @@
-{"root":["./src/app.test.tsx","./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/features/health/healthslice.test.ts","./src/features/health/healthslice.ts","./src/store/hooks.ts","./src/store/store.ts","./src/test/setup.ts"],"version":"5.9.3"}
