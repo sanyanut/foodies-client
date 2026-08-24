@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
+import { Routes, Route } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "./store/hooks.ts";
 import { pingBackend } from "./features/health/healthSlice.ts";
+import { AddRecipePage } from "./pages/AddRecipePage/AddRecipePage.tsx";
 
 interface SubscribeForm {
   email: string;
@@ -14,7 +16,7 @@ const statusStyles: Record<string, string> = {
   down: "bg-red-100 text-red-700",
 };
 
-export default function App() {
+function DemoPage() {
   const dispatch = useAppDispatch();
   const { status, lastCheckedAt } = useAppSelector((state) => state.health);
 
@@ -97,5 +99,14 @@ export default function App() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<DemoPage />} />
+      <Route path="/add-recipe" element={<AddRecipePage />} />
+    </Routes>
   );
 }
