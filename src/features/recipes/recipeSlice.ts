@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Базовий URL твого бекенду
-const API_URL = "http://localhost:3000"; // Заміни на свій порт, якщо потрібно
+// main API URL for the backend server
+const API_URL = "http://localhost:3000";
 
 // Інтерфейси для типізації
 export interface Ingredient {
@@ -37,7 +37,7 @@ const initialState: RecipesState = {
   error: null,
 };
 
-// Асинхронний запит для отримання рецепта за ID (GET /recipes/:id)
+// async request to fetch a recipe by ID (GET /recipes/:id)
 export const fetchRecipeById = createAsyncThunk<Recipe, string, { rejectValue: string }>(
   "recipes/fetchRecipeById",
   async (id, thunkAPI) => {
@@ -55,7 +55,7 @@ export const fetchRecipeById = createAsyncThunk<Recipe, string, { rejectValue: s
   },
 );
 
-// Асинхронний запит для отримання популярних рецептів (GET /recipes/popular)
+// async request to fetch popular recipes (GET /recipes/popular)
 export const fetchPopularRecipes = createAsyncThunk<
   Recipe[],
   void,
