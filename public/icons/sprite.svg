@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-close" viewBox="0 0 24 24" fill="none">
+    <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none">
+    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-burger" viewBox="0 0 24 24" fill="none">
+    <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-eye" viewBox="0 0 24 24" fill="none">
+    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/>
+  </symbol>
+
+  <symbol id="icon-eye-off" viewBox="0 0 24 24" fill="none">
+    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/>
+    <path d="M4 4l16 16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="icon-arrow-up-right" viewBox="0 0 24 24" fill="none">
+    <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-facebook" viewBox="0 0 24 24">
+    <path d="M13.5 21v-8h2.2l.3-2.6h-2.5V8.7c0-.75.2-1.26 1.28-1.26H16V5.1c-.24-.03-1.06-.1-2.02-.1-2 0-3.37 1.22-3.37 3.47v1.93H8.4V13h2.2v8h2.9z" fill="currentColor"/>
+  </symbol>
+
+  <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none">
+    <rect x="4" y="4" width="16" height="16" rx="5" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="12" cy="12" r="3.6" stroke="currentColor" stroke-width="1.7"/>
+    <circle cx="16.6" cy="7.4" r="1.1" fill="currentColor"/>
+  </symbol>
+
+  <symbol id="icon-youtube" viewBox="0 0 24 24">
+    <path d="M21.6 8.2a2.5 2.5 0 0 0-1.77-1.77C18.25 6 12 6 12 6s-6.25 0-7.83.43A2.5 2.5 0 0 0 2.4 8.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 3.8 2.5 2.5 0 0 0 1.77 1.77C5.75 18 12 18 12 18s6.25 0 7.83-.43A2.5 2.5 0 0 0 21.6 15.8 26 26 0 0 0 22 12a26 26 0 0 0-.4-3.8zM10 15V9l5.2 3-5.2 3z" fill="currentColor"/>
+  </symbol>
+</svg>

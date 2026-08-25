@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* ── Foodies design tokens (Figma UI Kit) ──
+   Monochrome palette + Mulish. Defined once here via Tailwind v4 `@theme`, which
+   exposes each token as BOTH a CSS variable and utility classes. Prefer these
+   over hardcoded hex (`bg-dark` / `var(--color-dark)`, not `bg-[#1A1A1A]`):
+
+     token           hex        css variable          utilities
+     --color-main    #050505    var(--color-main)     bg-main  text-main  border-main
+     --color-dark    #1A1A1A    var(--color-dark)     bg-dark  text-dark  border-dark
+     --color-gray    #BFBEBE    var(--color-gray)     bg-gray  text-gray  border-gray
+     --color-white   #FFFFFF    var(--color-white)    bg-white text-white border-white
+
+   Opacity works too: `bg-main/50`, `border-gray/40`. `--font-sans` also becomes
+   the app-wide default font via Preflight. */
+@theme {
+  --font-sans: "Mulish", ui-sans-serif, system-ui, sans-serif;
+
+  --color-main: #050505;
+  --color-dark: #1a1a1a;
+  --color-gray: #bfbebe;
+  --color-white: #ffffff;
+
+  --radius-modal: 30px;
+  --radius-dropdown: 15px;
+}
+
+/* App-wide base: light background, near-black text, Mulish. */
+body {
+  background-color: var(--color-white);
+  color: var(--color-main);
+  font-family: var(--font-sans);
+}

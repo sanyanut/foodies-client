@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 
 import { store } from "./store/store.ts";
 import App from "./App.tsx";
@@ -8,18 +9,21 @@ import App from "./App.tsx";
 const renderApp = () =>
   render(
     <Provider store={store}>
-      <App />
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
     </Provider>,
   );
 
 describe("<App />", () => {
-  it("renders the Foodies heading", () => {
+  it("renders the Foodies logo in the shell", () => {
     renderApp();
-    expect(screen.getByRole("heading", { name: /foodies/i })).toBeInTheDocument();
+    // Header + Footer both render a logo link.
+    expect(screen.getAllByRole("link", { name: /foodies/i }).length).toBeGreaterThan(0);
   });
 
-  it("renders the backend check button", () => {
+  it("shows the guest auth actions when logged out", () => {
     renderApp();
-    expect(screen.getByRole("button", { name: /check backend/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /sign up/i }).length).toBeGreaterThan(0);
   });
 });
