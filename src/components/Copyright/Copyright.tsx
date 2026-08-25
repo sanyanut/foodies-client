@@ -9,7 +9,7 @@ export const Copyright = () => {
 
   return (
     <div className="w-full border-t border-[#BFBEBE]/30">
-      <div className="mx-auto w-[262px] pt-[40px] pb-[35px] md:pb-[40px] lg:pb-[46px]">
+      <div className="mx-auto w-[262px] pt-[40px] pb-[16px] md:pb-[32px] lg:pb-[40px]">
         <p
           className="flex items-center justify-center text-center font-medium text-[#1A1A1A] 
           h-[20px] leading-[20px] text-[14px] tracking-[-0.28px] 
