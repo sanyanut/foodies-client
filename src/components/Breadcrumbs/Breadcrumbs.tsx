@@ -18,14 +18,11 @@ export const Breadcrumbs = ({ currentPage }: BreadcrumbsProps) => {
       aria-label="Breadcrumbs"
       className="mb-[32px] flex flex-wrap items-center gap-[8px] text-[12px] font-bold uppercase leading-[18px] tracking-[-0.24px] md:mb-[40px]"
     >
-      <Link
-        to="/"
-        className="shrink-0 text-[#BFBEBE] transition-colors hover:text-[#050505]"
-      >
+      <Link to="/" className="shrink-0 text-gray transition-colors hover:text-main">
         Home
       </Link>
-      <span className="shrink-0 text-[#BFBEBE]">/</span>
-      <span className="break-words text-[#050505]">{currentPage}</span>
+      <span className="shrink-0 text-gray">/</span>
+      <span className="break-words text-main">{currentPage}</span>
     </nav>
   );
 };

@@ -32,7 +32,7 @@ export const RecipeTitleFields = () => {
           className={`w-full bg-transparent pb-[14px] text-[14px] font-bold uppercase tracking-[-0.28px] outline-none transition-colors md:text-[16px] md:tracking-[-0.32px] ${
             isTitleError
               ? "text-red-500 placeholder:text-red-500"
-              : "text-[#050505] placeholder:text-[#BFBEBE] focus:placeholder-transparent"
+              : "text-main placeholder:text-gray focus:placeholder-transparent"
           }`}
         />
       </div>
@@ -48,14 +48,14 @@ export const RecipeTitleFields = () => {
             className={`w-full bg-transparent text-[14px] leading-[20px] tracking-[-0.28px] outline-none transition-colors md:text-[16px] md:leading-[24px] md:tracking-[-0.32px] ${
               isDescriptionError
                 ? "text-red-500 placeholder:text-red-500"
-                : "text-[#050505] placeholder:text-[#BFBEBE]"
+                : "text-main placeholder:text-gray"
             }`}
           />
 
           {/* Лічильник символів */}
           <span
             className={`shrink-0 text-[12px] leading-[18px] tracking-[-0.24px] md:text-[14px] md:leading-[20px] ${
-              isDescriptionError ? "text-red-500" : "text-[#BFBEBE]"
+              isDescriptionError ? "text-red-500" : "text-gray"
             }`}
           >
             {description.length}/200
@@ -65,7 +65,7 @@ export const RecipeTitleFields = () => {
         {/* Нижня лінія */}
         <div
           className={`h-[1px] w-full transition-colors ${
-            isDescriptionError ? "bg-red-500" : "bg-[#BFBEBE]/60"
+            isDescriptionError ? "bg-red-500" : "bg-gray/60"
           }`}
         />
       </div>

@@ -65,11 +65,11 @@ export const RecipeImageUpload = () => {
           tabIndex={0}
           onClick={handleOpenFileDialog}
           onBlur={handleBlur}
-          className="group flex h-[318px] w-full cursor-pointer flex-col items-center justify-center rounded-[30px] border border-dashed border-[#BFBEBE] transition-all duration-200 hover:border-[#050505] focus:outline-none focus:ring-2 focus:ring-[#050505] focus:ring-offset-2 md:h-[400px] lg:h-[400px] lg:w-[551px]"
+          className="group flex h-[318px] w-full cursor-pointer flex-col items-center justify-center rounded-[30px] border border-dashed border-gray transition-all duration-200 hover:border-main focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:h-[400px] lg:h-[400px] lg:w-[551px]"
         >
-          <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-[#050505] transition-transform duration-200 group-hover:scale-105 md:h-[64px] md:w-[64px]">
+          <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-main transition-transform duration-200 group-hover:scale-105 md:h-[64px] md:w-[64px]">
             <svg
-              className="h-[18.75px] w-[18.75px] text-[#050505] md:h-[24px] md:w-[24px]"
+              className="h-[18.75px] w-[18.75px] text-main md:h-[24px] md:w-[24px]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -82,7 +82,7 @@ export const RecipeImageUpload = () => {
             </svg>
           </div>
 
-          <span className="mt-[8px] font-medium text-[#050505] underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] md:mt-[16px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]">
+          <span className="mt-[8px] font-medium text-main underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] md:mt-[16px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]">
             Upload a photo
           </span>
         </button>
@@ -102,7 +102,7 @@ export const RecipeImageUpload = () => {
             tabIndex={0}
             onClick={handleOpenFileDialog}
             onBlur={handleBlur}
-            className="mt-[16px] self-center rounded font-medium text-[#050505] underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-[#050505] focus:ring-offset-2 md:mt-[20px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]"
+            className="mt-[16px] self-center rounded font-medium text-main underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:mt-[20px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]"
           >
             Upload another photo
           </button>

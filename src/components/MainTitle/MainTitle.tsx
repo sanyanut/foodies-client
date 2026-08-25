@@ -23,13 +23,13 @@ export const MainTitle = ({
 }: MainTitleProps) => {
   // Для категорій на мобільному текст сірий (#BFBEBE), на десктопі — темний (#1A1A1A)
   const descriptionColor =
-    variant === "category" ? "text-[#BFBEBE] md:text-[#1A1A1A]" : "text-[#1A1A1A]";
+    variant === "category" ? "text-gray md:text-dark" : "text-dark";
 
   return (
     <div
       className={`flex flex-col gap-[16px] md:gap-[20px] mb-[32px] md:mb-[40px] ${className}`}
     >
-      <Tag className="font-extrabold uppercase text-[#050505] text-[28px] leading-[32px] tracking-[-0.56px] md:text-[40px] md:leading-[44px] md:tracking-[-0.8px]">
+      <Tag className="font-extrabold uppercase text-main text-[28px] leading-[32px] tracking-[-0.56px] md:text-[40px] md:leading-[44px] md:tracking-[-0.8px]">
         {title}
       </Tag>
       <p
