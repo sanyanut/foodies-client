@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import healthReducer from "../features/health/healthSlice.ts";
+import authReducer from "../features/auth/authSlice.ts";
+import modalReducer from "../features/ui/modalSlice.ts";
 import recipeReducer from "../features/recipes/recipeSlice.ts";
 
 // Central Redux store. Feature slices are registered here as the app grows.
@@ -8,6 +10,8 @@ import recipeReducer from "../features/recipes/recipeSlice.ts";
 export const store = configureStore({
   reducer: {
     health: healthReducer,
+    auth: authReducer,
+    modal: modalReducer,
     recipes: recipeReducer,
   },
 });
