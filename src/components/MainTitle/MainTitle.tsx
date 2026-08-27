@@ -24,6 +24,12 @@ export const MainTitle = ({
   // Для категорій на мобільному текст сірий (#BFBEBE), на десктопі — темний (#1A1A1A)
   const descriptionColor =
     variant === "category" ? "text-gray md:text-dark" : "text-dark";
+  // За Figma опис категорій фіксований на 531px (і на планшеті, і на десктопі) —
+  // саме ця ширина дає перенос рівно у 2 рядки.
+  const descriptionWidth =
+    variant === "category"
+      ? "max-w-[343px] md:max-w-[531px]"
+      : "max-w-[343px] md:max-w-[443px]";
 
   return (
     <div
@@ -33,7 +39,7 @@ export const MainTitle = ({
         {title}
       </Tag>
       <p
-        className={`font-medium max-w-[343px] md:max-w-[443px] text-[14px] leading-[20px] tracking-[-0.28px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px] ${descriptionColor}`}
+        className={`font-medium ${descriptionWidth} text-[14px] leading-[20px] tracking-[-0.28px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px] ${descriptionColor}`}
       >
         {description}
       </p>
