@@ -4,16 +4,26 @@ import axios from "axios";
 // main API URL for the backend server
 const API_URL = "http://localhost:3000";
 
-// Інтерфейси для типізації
+// Interfaces for types
 export interface Ingredient {
-  id: number;
+  id: string | number;
   name: string;
   amount: string;
+  image?: string;
+}
+
+export interface Owner {
+  _id?: string;
+  name?: string;
+  avatar?: string;
 }
 
 export interface Recipe {
   id: string;
   title: string;
+  category: {
+    name: string;
+  };
   categoryName: string;
   areaName: string;
   instructions: string;
@@ -22,7 +32,13 @@ export interface Recipe {
   preview?: string | null;
   time: number;
   ownerId: string;
+  owner?: {
+    name?: string;
+    avatar?: string;
+  }; 
+  ingredients?: Ingredient[]; 
 }
+
 interface RecipesState {
   currentRecipe: Recipe | null;
   popularRecipes: Recipe[];

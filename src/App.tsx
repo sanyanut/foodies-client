@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { SharedLayout } from "./layouts/SharedLayout.tsx";
 import { ProtectedRoute } from "./routes/ProtectedRoute.tsx";
@@ -11,6 +11,7 @@ import { RecipeDetailsPage } from "./features/recipes/RecipeDetailsPage.tsx";
 
 export default function App() {
   return (
+    <BrowserRouter> 
     <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route index element={<HomePage />} />
@@ -34,5 +35,6 @@ export default function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
+  </BrowserRouter>
   );
 }

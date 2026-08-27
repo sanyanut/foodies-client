@@ -1,0 +1,64 @@
+
+.section {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #000;
+  
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .list {
+    
+    grid-template-columns: repeat(3, 1fr); 
+  }
+}
+.item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: #ffffff; 
+  border-radius: 16px;
+  gap: 16px;
+}
+
+.image {
+  width: 90px;
+  height: 90px;
+  object-fit: contain; 
+  border: 1px solid #E0E0E0; 
+  border-radius: 30px;
+  padding: 6px;
+  background-color: #ffffff;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.amount {
+  font-size: 14px;
+  color: #BFBEBE; 
+}
