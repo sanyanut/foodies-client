@@ -1,24 +1,38 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
+import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
+import { openModal } from "../../features/ui/modalSlice.ts";
+import { toggleFavorite } from "../../features/recipes/favoritesSlice.ts";
 import type { RecipeCardData } from "../../features/recipes/types.ts";
 import { Icon } from "../../shared/Icon/Icon.tsx";
 
 interface RecipeCardProps {
   recipe: RecipeCardData;
-  isFavorite?: boolean;
-  onFavoriteToggle?: (recipeId: string) => void;
 }
 
-export const RecipeCard = ({
-  recipe,
-  isFavorite = false,
-  onFavoriteToggle,
-}: RecipeCardProps) => {
+/**
+ * Universal recipe card (ТЗ): image, title, description, an author button
+ * (guest → Sign In modal, authed → the author's UserPage), a favorite heart
+ * (guest → Sign In modal, authed → add/remove favorite, accent when favorited),
+ * and an arrow that opens the recipe's page.
+ */
+export const RecipeCard = ({ recipe }: RecipeCardProps) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isFavorite = useAppSelector((state) => state.favorites.ids.includes(recipe.id));
+
   const imageUrl = recipe.thumb ?? recipe.preview;
   const ownerInitial = recipe.owner.name.trim().charAt(0).toUpperCase() || "?";
 
+  const handleAuthorClick = () => {
+    if (isAuthenticated) navigate(`/user/${recipe.ownerId}`);
+    else dispatch(openModal("signin"));
+  };
+
   const handleFavoriteClick = () => {
-    onFavoriteToggle?.(recipe.id);
+    if (isAuthenticated) void dispatch(toggleFavorite(recipe.id));
+    else dispatch(openModal("signin"));
   };
 
   return (
@@ -55,7 +69,12 @@ export const RecipeCard = ({
       </p>
 
       <div className="mt-[16px] flex items-center justify-between gap-[12px]">
-        <div className="flex min-w-0 items-center gap-[8px]">
+        <button
+          type="button"
+          onClick={handleAuthorClick}
+          aria-label={`View ${recipe.owner.name}'s profile`}
+          className="group flex min-w-0 items-center gap-[8px] rounded-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
+        >
           {recipe.owner.avatar ? (
             <img
               src={recipe.owner.avatar}
@@ -69,10 +88,10 @@ export const RecipeCard = ({
             </span>
           )}
 
-          <span className="truncate text-[12px] font-bold leading-[18px] tracking-[-0.24px]">
+          <span className="truncate text-[12px] font-bold leading-[18px] tracking-[-0.24px] transition-colors group-hover:text-gray">
             {recipe.owner.name}
           </span>
-        </div>
+        </button>
 
         <div className="flex shrink-0 items-center gap-[4px]">
           <button
@@ -83,9 +102,8 @@ export const RecipeCard = ({
                 : `Add ${recipe.title} to favorites`
             }
             aria-pressed={isFavorite}
-            disabled={!onFavoriteToggle}
             onClick={handleFavoriteClick}
-            className={`flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors disabled:cursor-default ${
+            className={`flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors ${
               isFavorite
                 ? "border-main bg-main text-white"
                 : "border-gray/60 bg-white text-main hover:border-main"

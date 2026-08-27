@@ -13,83 +13,56 @@ const areas = [
   { id: "area-british", name: "British" },
 ];
 
-describe("RecipeFilters", () => {
-  it("renders ingredient and area options", () => {
-    render(
-      <RecipeFilters
-        ingredients={ingredients}
-        areas={areas}
-        ingredient=""
-        area=""
-        onIngredientChange={vi.fn()}
-        onAreaChange={vi.fn()}
-      />,
-    );
+const renderFilters = (props = {}) =>
+  render(
+    <RecipeFilters
+      ingredients={ingredients}
+      areas={areas}
+      ingredient=""
+      area=""
+      onIngredientChange={vi.fn()}
+      onAreaChange={vi.fn()}
+      {...props}
+    />,
+  );
 
+describe("RecipeFilters", () => {
+  it("shows the options when a dropdown is opened", () => {
+    renderFilters();
+
+    fireEvent.click(screen.getByRole("button", { name: "Filter by ingredients" }));
     expect(screen.getByRole("option", { name: "Almonds" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Filter by area" }));
     expect(screen.getByRole("option", { name: "Ukrainian" })).toBeInTheDocument();
   });
 
-  it("reports selected filter values", () => {
+  it("reports the selected option value", () => {
     const onIngredientChange = vi.fn();
-    const onAreaChange = vi.fn();
+    renderFilters({ onIngredientChange });
 
-    render(
-      <RecipeFilters
-        ingredients={ingredients}
-        areas={areas}
-        ingredient=""
-        area=""
-        onIngredientChange={onIngredientChange}
-        onAreaChange={onAreaChange}
-      />,
-    );
-
-    fireEvent.change(
-      screen.getByRole("combobox", {
-        name: "Filter by ingredients",
-      }),
-      {
-        target: { value: "ingredient-almonds" },
-      },
-    );
-
-    fireEvent.change(
-      screen.getByRole("combobox", {
-        name: "Filter by area",
-      }),
-      {
-        target: { value: "area-ukrainian" },
-      },
-    );
+    fireEvent.click(screen.getByRole("button", { name: "Filter by ingredients" }));
+    fireEvent.click(screen.getByRole("option", { name: "Almonds" }));
 
     expect(onIngredientChange).toHaveBeenCalledWith("ingredient-almonds");
-    expect(onAreaChange).toHaveBeenCalledWith("area-ukrainian");
+  });
+
+  it("filters options as the user types", () => {
+    renderFilters();
+
+    fireEvent.click(screen.getByRole("button", { name: "Filter by ingredients" }));
+    fireEvent.change(screen.getByPlaceholderText(/search ingredients/i), {
+      target: { value: "salm" },
+    });
+
+    expect(screen.getByRole("option", { name: "Salmon" })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "Almonds" })).not.toBeInTheDocument();
   });
 
   it("disables both filters when loading", () => {
-    render(
-      <RecipeFilters
-        ingredients={ingredients}
-        areas={areas}
-        ingredient=""
-        area=""
-        disabled
-        onIngredientChange={vi.fn()}
-        onAreaChange={vi.fn()}
-      />,
-    );
+    renderFilters({ disabled: true });
 
-    expect(
-      screen.getByRole("combobox", {
-        name: "Filter by ingredients",
-      }),
-    ).toBeDisabled();
-
-    expect(
-      screen.getByRole("combobox", {
-        name: "Filter by area",
-      }),
-    ).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Filter by ingredients" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Filter by area" })).toBeDisabled();
   });
 });

@@ -65,16 +65,10 @@ const cardWidth = (wideOnTablet?: boolean, wideOnDesktop?: boolean) =>
       : "min-[1440px]:w-[calc((100%-40px)*0.26)]!"
   }`;
 
-// TODO: wire up to the backend — clicking a category's arrow button should
-// fetch its recipes (showing errors as a toast) and swap this list out for
-// the Recipes component; "All categories" fetches every recipe the same way.
-const handleCategoryClick = (name: string) => {
-  console.log("Selected category:", name);
-};
-
-const handleAllCategoriesClick = () => {
-  console.log("Selected: All categories");
-};
+interface CategoryListProps {
+  onSelectCategory: (name: string) => void;
+  onSelectAll: () => void;
+}
 
 const CategoryCard = ({
   name,
@@ -82,7 +76,8 @@ const CategoryCard = ({
   wideOnTablet,
   wideOnDesktop,
   desktopOnly,
-}: Category) => (
+  onSelect,
+}: Category & { onSelect: (name: string) => void }) => (
   <div
     className={`relative h-[250px] shrink-0 overflow-hidden rounded-[20px] md:h-[369px] md:rounded-[30px] ${cardWidth(wideOnTablet, wideOnDesktop)} ${desktopOnly ? "hidden md:block" : ""}`}
   >
@@ -94,7 +89,7 @@ const CategoryCard = ({
       </span>
       <button
         type="button"
-        onClick={() => handleCategoryClick(name)}
+        onClick={() => onSelect(name)}
         aria-label={`View ${name} recipes`}
         className="flex items-center justify-center rounded-full border border-white/20 p-[11px] text-white transition-transform hover:scale-110 active:scale-90 md:p-[12px]"
       >
@@ -104,15 +99,15 @@ const CategoryCard = ({
   </div>
 );
 
-export const CategoryList = () => (
+export const CategoryList = ({ onSelectCategory, onSelectAll }: CategoryListProps) => (
   <div className="flex flex-wrap items-start gap-4 md:gap-5">
     {CATEGORIES.map((category) => (
-      <CategoryCard key={category.name} {...category} />
+      <CategoryCard key={category.name} {...category} onSelect={onSelectCategory} />
     ))}
 
     <button
       type="button"
-      onClick={handleAllCategoriesClick}
+      onClick={onSelectAll}
       className={`flex h-[250px] shrink-0 items-center justify-center rounded-[20px] bg-main text-[16px] font-extrabold uppercase text-white tracking-[-0.32px] transition-colors hover:bg-dark md:h-[369px] md:rounded-[30px] md:text-[20px] md:tracking-[-0.4px] ${cardWidth()}`}
     >
       All categories

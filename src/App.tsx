@@ -6,14 +6,12 @@ import { HomePage } from "./pages/HomePage/HomePage.tsx";
 import { AddRecipePage } from "./pages/AddRecipePage/AddRecipePage.tsx";
 import { UserPage } from "./pages/UserPage/UserPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage.tsx";
-import { RecipesPage } from "./pages/RecipesPage/RecipesPage.tsx";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="recipes" element={<RecipesPage />} />
         <Route
           path="add-recipe"
           element={
