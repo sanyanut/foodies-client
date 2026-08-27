@@ -23,6 +23,11 @@
 
   --radius-modal: 30px;
   --radius-dropdown: 15px;
+
+  /* Desktop design spec (Hero, etc.) is authored at 1440px, not Tailwind's
+     default xl (1280px) — override so `xl:` means "1440 and up" app-wide.
+     Unused elsewhere today, so this is a safe redefinition. */
+  --breakpoint-xl: 1440px;
 }
 
 /* App-wide base: light background, near-black text, Mulish. */
