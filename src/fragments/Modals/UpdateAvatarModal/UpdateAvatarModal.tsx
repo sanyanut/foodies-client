@@ -2,12 +2,18 @@ import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks.ts";
 import { closeModal } from "../../../features/ui/modalSlice.ts";
 import { updateAvatar } from "../../../features/user/userSlice.ts";
+import { updateUserAvatar } from "../../../features/auth/authSlice.ts";
 import { Modal } from "../Modal/Modal.tsx";
 import type { RootState } from "../../../store/store.ts";
+// import { AVATAR_MOT_FOUND_IMG } from "../../../shared/constants.ts";
 
 export const UpdateAvatarModal = () => {
   const dispatch = useAppDispatch();
   const avatarStatus = useAppSelector((state: RootState) => state.user.avatarStatus);
+  // Поточний аватар юзера з auth стейту (або fallback константа)
+  // const currentAvatar = useAppSelector(
+  //   (state: RootState) => state.auth.user?.avatar ?? AVATAR_MOT_FOUND_IMG,
+  // );
 
   // Посилання на прихований input[type="file"]
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,8 +34,9 @@ export const UpdateAvatarModal = () => {
   const handleSubmit = async () => {
     if (!selectedFile) return;
     const result = await dispatch(updateAvatar(selectedFile));
-    // Якщо запит успішний — закриваємо модалку
     if (updateAvatar.fulfilled.match(result)) {
+      // Оновлюємо аватар і в auth.user → хедер одразу показує нове фото
+      dispatch(updateUserAvatar(result.payload));
       dispatch(closeModal());
     }
   };
@@ -45,7 +52,7 @@ export const UpdateAvatarModal = () => {
           Update photo
         </h2>
 
-        {/* Прев'ю вибраного фото */}
+        {/* До вибору файлу — '+', після — прев'ю */}
         <div
           onClick={() => inputRef.current?.click()}
           className="h-32 w-32 cursor-pointer overflow-hidden rounded-full border-2 border-dashed border-gray-300 hover:border-black transition-colors flex items-center justify-center bg-gray-50"

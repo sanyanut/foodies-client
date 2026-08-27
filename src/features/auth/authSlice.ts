@@ -146,6 +146,13 @@ const authSlice = createSlice({
       setAccessToken(null);
       persistUser(null);
     },
+    // Оновлює аватар в auth.user після успішного завантаження нового фото
+    updateUserAvatar(state, action: { payload: string }) {
+      if (state.user) {
+        state.user.avatar = action.payload;
+        persistUser(state.user); // Оновлюємо localStorage теж
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -183,5 +190,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { forceLogout } = authSlice.actions;
+export const { forceLogout, updateUserAvatar } = authSlice.actions;
 export default authSlice.reducer;
