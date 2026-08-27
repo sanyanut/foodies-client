@@ -2,7 +2,21 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
-import { fetchLookups } from "../../features/recipes/lookupsSlice.ts";
+import {
+  fetchCategories,
+  selectCategories,
+  selectCategoriesStatus,
+} from "../../features/categories/categoriesSlice.ts";
+import {
+  fetchIngredients,
+  selectIngredients,
+  selectIngredientsStatus,
+} from "../../features/ingredients/ingredientsSlice.ts";
+import {
+  fetchAreas,
+  selectAreas,
+  selectAreasStatus,
+} from "../../features/areas/areasSlice.ts";
 import { fetchFavorites } from "../../features/recipes/favoritesSlice.ts";
 import { getRecipes } from "../../features/recipes/recipesApi.ts";
 import type { RecipesResponse } from "../../features/recipes/types.ts";
@@ -32,13 +46,16 @@ function isAbortError(error: unknown): boolean {
 export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const {
-    categories,
-    ingredients,
-    areas,
-    status: lookupsStatus,
-    error: lookupsError,
-  } = useAppSelector((state) => state.lookups);
+  const categories = useAppSelector(selectCategories);
+  const ingredients = useAppSelector(selectIngredients);
+  const areas = useAppSelector(selectAreas);
+  const categoriesStatus = useAppSelector(selectCategoriesStatus);
+  const ingredientsStatus = useAppSelector(selectIngredientsStatus);
+  const areasStatus = useAppSelector(selectAreasStatus);
+  // Surface the first dictionary error (if any) next to the filters.
+  const lookupsError = useAppSelector(
+    (state) => state.categories.error ?? state.ingredients.error ?? state.areas.error,
+  );
 
   const [ingredient, setIngredient] = useState("");
   const [area, setArea] = useState("");
@@ -57,9 +74,12 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
     sectionRef.current?.scrollIntoView({ block: "start" });
   }, []);
 
-  // Cache ingredients/areas/categories in the store once.
+  // Load the filter dictionaries once. Each thunk is cached (a no-op once its
+  // list is already loaded), so revisiting the catalog won't refetch them.
   useEffect(() => {
-    void dispatch(fetchLookups());
+    void dispatch(fetchCategories());
+    void dispatch(fetchIngredients());
+    void dispatch(fetchAreas());
   }, [dispatch]);
 
   // Load the user's favorites so cards can show the accent heart.
@@ -79,9 +99,10 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
     return match?.id;
   }, [categoryName, categories]);
 
-  const lookupsReady = lookupsStatus === "ready";
-  // A named category needs the lookups loaded first (to know its id).
-  const canFetch = categoryName === null || lookupsReady;
+  const filtersReady = ingredientsStatus === "succeeded" && areasStatus === "succeeded";
+  const categoriesReady = categoriesStatus === "succeeded";
+  // A named category needs the categories loaded first (to resolve its id).
+  const canFetch = categoryName === null || categoriesReady;
 
   // Category change resets to the first page.
   useEffect(() => {
@@ -164,7 +185,7 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
             areas={areas}
             ingredient={ingredient}
             area={area}
-            disabled={!lookupsReady || Boolean(lookupsError)}
+            disabled={!filtersReady || Boolean(lookupsError)}
             onIngredientChange={handleIngredientChange}
             onAreaChange={handleAreaChange}
           />
