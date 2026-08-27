@@ -5,6 +5,7 @@
  */
 interface IconProps {
   name:
+    | "heart"
     | "close"
     | "chevron-down"
     | "burger"
