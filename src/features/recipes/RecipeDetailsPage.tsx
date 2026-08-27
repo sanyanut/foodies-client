@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchRecipeById } from "./recipeSlice";
 import { RecipeIngredients } from "./components/RecipeIngredients/RecipeIngredients";
+import type { Recipe } from "./recipeSlice"; 
 import axios from "axios"; 
 import styles from './RecipeDetailsPage.module.css';
 
@@ -13,7 +14,7 @@ export const RecipeDetailsPage: React.FC = () => {
   const { currentRecipe, status, error } = useAppSelector((state) => state.recipes);
 
   // State to hold popular recipes for the bottom block
-  const [popularRecipes, setPopularRecipes] = useState<any[]>([]);
+ const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
 
   useEffect(() => {
     const isValidMongoId = id && id.length === 24;
@@ -145,6 +146,7 @@ console.log("Current recipe data:", currentRecipe);
           </div>
         </div>
       )}
+
       
 
     </div>
@@ -152,5 +154,4 @@ console.log("Current recipe data:", currentRecipe);
   );
 
 };
-
 export default RecipeDetailsPage;
