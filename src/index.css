@@ -23,12 +23,16 @@
 
   --radius-modal: 30px;
   --radius-dropdown: 15px;
-
-  /* Desktop design spec (Hero, etc.) is authored at 1440px, not Tailwind's
-     default xl (1280px) — override so `xl:` means "1440 and up" app-wide.
-     Unused elsewhere today, so this is a safe redefinition. */
-  --breakpoint-xl: 1440px;
 }
+
+/* Desktop design spec (Hero, Categories, etc.) is authored at 1440px, not any
+   of Tailwind's default breakpoints. Use the arbitrary variant
+   `min-[1440px]:` for it rather than overriding `--breakpoint-xl`: Tailwind
+   v4 emits an overridden named breakpoint's media block *before* the
+   untouched defaults (sm/md/lg/2xl) in the generated stylesheet, so at
+   >=1440px a later `md:` rule of equal specificity would win the cascade
+   over an earlier `xl:` rule — silently breaking the desktop override. The
+   arbitrary variant sidesteps that ordering bug entirely. */
 
 /* App-wide base: light background, near-black text, Mulish. */
 body {
