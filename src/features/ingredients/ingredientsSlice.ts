@@ -21,7 +21,14 @@ const initialState: IngredientsState = {
   error: null,
 };
 
-// GET /ingredients is a public endpoint — no auth required.
+interface State {
+  ingredients: IngredientsState;
+}
+
+// GET /ingredients is a public endpoint — no auth required. Ingredients are a
+// static dictionary, so once a fetch has succeeded (or is in flight) further
+// dispatches are skipped and the cached `items` are reused instead of
+// re-requesting the list on every mount.
 export const fetchIngredients = createAsyncThunk(
   "ingredients/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -32,6 +39,12 @@ export const fetchIngredients = createAsyncThunk(
         err instanceof ApiError ? err.message : "Failed to fetch ingredients",
       );
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { status } = (getState() as State).ingredients;
+      return status !== "loading" && status !== "succeeded";
+    },
   },
 );
 
@@ -55,5 +68,9 @@ const ingredientsSlice = createSlice({
       });
   },
 });
+
+export const selectIngredients = (state: State): Ingredient[] => state.ingredients.items;
+export const selectIngredientsStatus = (state: State): IngredientsState["status"] =>
+  state.ingredients.status;
 
 export default ingredientsSlice.reducer;

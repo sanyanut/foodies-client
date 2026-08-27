@@ -1,7 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+import { configureStore } from "@reduxjs/toolkit";
 
 import ingredientsReducer, { fetchIngredients } from "./ingredientsSlice.ts";
 import type { Ingredient } from "./ingredientsSlice.ts";
+import * as apiClient from "../../lib/apiClient.ts";
 
 const sample: Ingredient[] = [
   {
@@ -45,5 +47,23 @@ describe("ingredientsSlice reducer", () => {
     );
     expect(state.status).toBe("failed");
     expect(state.error).toBe("Failed to fetch ingredients");
+  });
+});
+
+describe("fetchIngredients caching", () => {
+  it("does not re-request once the list has already been fetched", async () => {
+    const requestSpy = vi
+      .spyOn(apiClient, "apiRequest")
+      .mockResolvedValue(sample as never);
+
+    const store = configureStore({ reducer: { ingredients: ingredientsReducer } });
+
+    await store.dispatch(fetchIngredients());
+    await store.dispatch(fetchIngredients());
+
+    expect(requestSpy).toHaveBeenCalledTimes(1);
+    expect(store.getState().ingredients.items).toEqual(sample);
+
+    requestSpy.mockRestore();
   });
 });

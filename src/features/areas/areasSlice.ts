@@ -19,7 +19,14 @@ const initialState: AreasState = {
   error: null,
 };
 
-// GET /areas is a public endpoint — no auth required.
+interface State {
+  areas: AreasState;
+}
+
+// GET /areas is a public endpoint — no auth required. Areas are a static
+// dictionary, so once a fetch has succeeded (or is in flight) further
+// dispatches are skipped and the cached `items` are reused instead of
+// re-requesting the list on every mount.
 export const fetchAreas = createAsyncThunk(
   "areas/fetchAll",
   async (_, { rejectWithValue }) => {
@@ -30,6 +37,12 @@ export const fetchAreas = createAsyncThunk(
         err instanceof ApiError ? err.message : "Failed to fetch areas",
       );
     }
+  },
+  {
+    condition: (_, { getState }) => {
+      const { status } = (getState() as State).areas;
+      return status !== "loading" && status !== "succeeded";
+    },
   },
 );
 
@@ -53,5 +66,9 @@ const areasSlice = createSlice({
       });
   },
 });
+
+export const selectAreas = (state: State): Area[] => state.areas.items;
+export const selectAreasStatus = (state: State): AreasState["status"] =>
+  state.areas.status;
 
 export default areasSlice.reducer;
