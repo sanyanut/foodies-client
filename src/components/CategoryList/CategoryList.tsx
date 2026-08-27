@@ -89,14 +89,14 @@ const CategoryCard = ({
     <img src={image} alt={name} className="h-full w-full object-cover" />
     <div className="absolute inset-0 bg-main/20" />
     <div className="absolute bottom-4 left-4 flex items-start gap-1 md:bottom-6 md:left-6">
-      <span className="flex items-center justify-center rounded-full border border-white bg-white/20 px-3 py-2 text-[16px] font-bold text-white tracking-[-0.32px] md:border-white/20 md:px-[14px] md:py-[10px] md:text-[20px] md:tracking-[-0.4px]">
+      <span className="flex items-center justify-center rounded-full border border-white bg-white/20 px-3 py-2 text-[16px] font-bold leading-[24px] text-white tracking-[-0.32px] md:border-white/20 md:px-[14px] md:py-[9px] md:text-[20px] md:tracking-[-0.4px]">
         {name}
       </span>
       <button
         type="button"
         onClick={() => handleCategoryClick(name)}
         aria-label={`View ${name} recipes`}
-        className="flex items-center justify-center rounded-full border border-white/20 p-[11px] text-white transition-transform hover:scale-110 active:scale-90 md:p-[13px]"
+        className="flex items-center justify-center rounded-full border border-white/20 p-[11px] text-white transition-transform hover:scale-110 active:scale-90 md:p-[12px]"
       >
         <Icon name="arrow-up-right" className="h-[18px] w-[18px]" />
       </button>
