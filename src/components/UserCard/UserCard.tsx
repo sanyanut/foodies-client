@@ -78,7 +78,7 @@ export function UserCard() {
 
   return (
     <>
-      <section className="w-full max-w-[400px] flex flex-col items-center rounded-[32px] border border-gray-200 px-[80px] py-[40px] mb-[20px] bg-white">
+      <section className="w-full max-w-[349px] flex flex-col items-center rounded-[32px] border border-gray-200 px-[40px] md:px-[80px] py-[40px] mb-[20px] bg-white">
         {/* Аватарка */}
         <div className="relative mb-6">
           <div className="h-28 w-28 overflow-hidden rounded-full">
@@ -139,8 +139,8 @@ export function UserCard() {
         </div>
       </section>
 
-      {/* Кнопка — вже визначена вище в actionButton */}
-      {actionButton}
+      {/* Кнопка — обмежена шириною як картка, відцентрована */}
+      <div className="w-full max-w-[349px]">{actionButton}</div>
     </>
   );
 }

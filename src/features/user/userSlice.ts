@@ -103,6 +103,22 @@ const userSlice = createSlice({
       state.status = "idle";
       state.error = null;
     },
+    decrementRecipeCount(state) {
+      if (state.viewedProfile && "recipesCount" in state.viewedProfile) {
+        state.viewedProfile.recipesCount = Math.max(
+          0,
+          state.viewedProfile.recipesCount - 1,
+        );
+      }
+    },
+    decrementFavoriteCount(state) {
+      if (state.viewedProfile && "favoritesCount" in state.viewedProfile) {
+        state.viewedProfile.favoritesCount = Math.max(
+          0,
+          state.viewedProfile.favoritesCount - 1,
+        );
+      }
+    },
   },
   extraReducers: (builder) => {
     // --- Обробка fetchMyProfile ---
@@ -158,5 +174,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearViewedProfile } = userSlice.actions;
+export const { clearViewedProfile, decrementRecipeCount, decrementFavoriteCount } =
+  userSlice.actions;
 export default userSlice.reducer;

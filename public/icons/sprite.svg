@@ -39,4 +39,12 @@
   <symbol id="icon-youtube" viewBox="0 0 24 24">
     <path d="M21.6 8.2a2.5 2.5 0 0 0-1.77-1.77C18.25 6 12 6 12 6s-6.25 0-7.83.43A2.5 2.5 0 0 0 2.4 8.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 3.8 2.5 2.5 0 0 0 1.77 1.77C5.75 18 12 18 12 18s6.25 0 7.83-.43A2.5 2.5 0 0 0 21.6 15.8 26 26 0 0 0 22 12a26 26 0 0 0-.4-3.8zM10 15V9l5.2 3-5.2 3z" fill="currentColor"/>
   </symbol>
+
+  <symbol id="icon-trash" viewBox="0 0 24 24" fill="none">
+    <path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="icon-heart" viewBox="0 0 24 24" fill="none">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
 </svg>

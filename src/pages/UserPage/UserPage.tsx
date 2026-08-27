@@ -21,10 +21,6 @@ export const UserPage = () => {
       </p>
 
       <UserPageContainer sidebar={<UserCard />} content={<UserTabs />} />
-
-      <p className="mt-16 text-[13px] text-gray">
-        UserPage — placeholder (out of scope for Header + Modals).
-      </p>
     </section>
   );
 };

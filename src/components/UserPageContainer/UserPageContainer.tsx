@@ -7,10 +7,18 @@ interface IProfileContainerProps {
 
 export function UserPageContainer({ sidebar, content }: IProfileContainerProps) {
   return (
-    <div className="max-w-[1440px]  py-8">
-      <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
-        <div className="w-full md:w-1/3 lg:w-[400px] flex-shrink-0">{sidebar}</div>
-        <div className="w-full flex-grow">{content}</div>
+    <div className="py-8">
+      {/*
+        Mobile + Tablet (< 1440px): колонка, картка центрована
+        Desktop (≥ 1440px): рядок — картка зліва як сайдбар, вкладки справа
+      */}
+      <div className="flex flex-col min-[1440px]:flex-row gap-8 min-[1440px]:gap-12 min-[1440px]:items-start">
+        {/* Картка: по центру на мобілці/таблеті, фіксована ширина на десктопі */}
+        <div className="w-full flex flex-col items-center min-[1440px]:block min-[1440px]:w-[349px] min-[1440px]:flex-shrink-0">
+          {sidebar}
+        </div>
+        {/* Вкладки: займають весь простір */}
+        <div className="w-full min-[1440px]:flex-grow">{content}</div>
       </div>
     </div>
   );
