@@ -52,18 +52,19 @@ export function UserTabs() {
     }
   }, [isMyProfile, activeTab, dispatch]);
 
-  // Головний фетч: запускається коли профіль завантажено або змінились залежності
+  // Main fetch: runs when profile is available or dependencies change
   useEffect(() => {
     if (!viewedProfile) return;
 
     if (activeTab === "recipes" || activeTab === "favorites") {
-      const endpoint =
-        activeTab === "recipes"
-          ? isMyProfile
-            ? "/recipes/own"
-            : `/users/${id}/recipes`
-          : "/recipes/favorites";
-
+      let endpoint: string;
+      if (activeTab === "favorites") {
+        endpoint = "/recipes/favorites";
+      } else if (isMyProfile) {
+        endpoint = "/recipes/own";
+      } else {
+        endpoint = `/users/${id}/recipes`;
+      }
       void dispatch(fetchTabRecipes({ endpoint, page: tabCurrentPage, limit: 9 }));
     } else {
       const targetId = isMyProfile ? authUser?.id : id;
@@ -76,7 +77,7 @@ export function UserTabs() {
 
       void dispatch(fetchTabUsers({ endpoint, page: tabCurrentPage, limit: 5 }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- viewedProfile?.id навмисно замість цілого об'єкта
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: viewedProfile?.id instead of full object
   }, [
     activeTab,
     id,

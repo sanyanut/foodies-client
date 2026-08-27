@@ -10,9 +10,9 @@ export interface IRecipePreview {
 }
 
 interface IRecipePreviewProps {
-  recipe: IRecipePreview;
-  isOwner: boolean;
-  onDelete: (id: string) => void;
+  readonly recipe: IRecipePreview;
+  readonly isOwner: boolean;
+  readonly onDelete: (id: string) => void;
 }
 
 export function RecipePreview({ recipe, isOwner, onDelete }: IRecipePreviewProps) {

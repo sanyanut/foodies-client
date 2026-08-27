@@ -43,11 +43,13 @@ export interface TabUserItem {
   recipes?: Array<{ id: string; thumb: string; title: string }>;
 }
 
+type Status = "idle" | "loading" | "succeeded" | "failed";
+
 interface UserState {
   viewedProfile: MyProfile | PublicProfile | null;
   isMyProfile: boolean;
-  status: "idle" | "loading" | "succeeded" | "failed";
-  avatarStatus: "idle" | "loading" | "succeeded" | "failed";
+  status: Status;
+  avatarStatus: Status;
   error: string | null;
 
   // Дані вкладок профілю
@@ -55,7 +57,7 @@ interface UserState {
   tabUsers: TabUserItem[];
   tabCurrentPage: number;
   tabTotalPages: number;
-  tabStatus: "idle" | "loading" | "succeeded" | "failed";
+  tabStatus: Status;
   tabError: string | null;
 }
 
@@ -361,20 +363,20 @@ const userSlice = createSlice({
     // --- toggleFollowUser ---
     builder.addCase(toggleFollowUser.fulfilled, (state, action) => {
       const { targetUserId, nowFollowed, isFollowingTab } = action.payload;
+      const countDelta = nowFollowed ? 1 : -1;
 
       // 1. Кнопка на сторінці чужого профілю (Follow/Unfollow для самого профілю)
-      if (state.viewedProfile && state.viewedProfile.id === targetUserId) {
+      if (state?.viewedProfile?.id === targetUserId) {
         if ("isFollowedByMe" in state.viewedProfile) {
           state.viewedProfile.isFollowedByMe = nowFollowed;
         }
         state.viewedProfile.followersCount = Math.max(
           0,
-          state.viewedProfile.followersCount + (nowFollowed ? 1 : -1),
+          state.viewedProfile.followersCount + countDelta,
         );
       }
 
       // 2. На СВОЄМУ профілі — змінюємо followingCount
-      //    (відписка/підписка на когось зі списку followers/following)
       if (
         state.isMyProfile &&
         state.viewedProfile &&
@@ -382,16 +384,14 @@ const userSlice = createSlice({
       ) {
         state.viewedProfile.followingCount = Math.max(
           0,
-          state.viewedProfile.followingCount + (nowFollowed ? 1 : -1),
+          state.viewedProfile.followingCount + countDelta,
         );
       }
 
-      // 3. Оновлюємо статус у списку
+      // 3. Оновлюємо список користувачів у табах
       if (isFollowingTab && !nowFollowed) {
-        // Відписались у вкладці Following — видаляємо з списку
         state.tabUsers = state.tabUsers.filter((u) => u.id !== targetUserId);
       } else {
-        // Оновлюємо isFollowedByMe для конкретного юзера у списку
         state.tabUsers = state.tabUsers.map((u) =>
           u.id === targetUserId ? { ...u, isFollowedByMe: nowFollowed } : u,
         );
