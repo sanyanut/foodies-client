@@ -92,6 +92,7 @@ export function UserCard() {
           {/* Кнопка '+' для зміни аватара — тільки на СВОЄМУ профілі */}
           {isMyProfile && (
             <button
+              onClick={() => dispatch(openModal("update-avatar"))}
               className="absolute -bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition-colors"
               type="button"
             >

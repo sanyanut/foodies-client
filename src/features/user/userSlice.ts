@@ -26,10 +26,11 @@ export interface PublicProfile {
 }
 
 interface UserState {
-  // Зберігаємо той профіль, який зараз відкритий на сторінці
   viewedProfile: MyProfile | PublicProfile | null;
-  isMyProfile: boolean; // Зручний прапорець, щоб знати, чия це сторінка
+  isMyProfile: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
+  // Окремий статус для оновлення аватара, щоб не блокувати весь профіль
+  avatarStatus: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
@@ -37,6 +38,7 @@ const initialState: UserState = {
   viewedProfile: null,
   isMyProfile: false,
   status: "idle",
+  avatarStatus: "idle",
   error: null,
 };
 
@@ -65,6 +67,27 @@ export const fetchPublicProfile = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(
         err instanceof ApiError ? err.message : "Failed to fetch public profile",
+      );
+    }
+  },
+);
+
+// Запит для оновлення аватара (PATCH /users/me/avatar, multipart/form-data)
+export const updateAvatar = createAsyncThunk(
+  "user/updateAvatar",
+  async (file: File, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
+      const data = await apiRequest<{ avatarUrl: string }>("/users/me/avatar", {
+        method: "PATCH",
+        auth: true,
+        body: formData,
+      });
+      return data.avatarUrl;
+    } catch (err) {
+      return rejectWithValue(
+        err instanceof ApiError ? err.message : "Failed to update avatar",
       );
     }
   },
@@ -115,6 +138,22 @@ const userSlice = createSlice({
       .addCase(fetchPublicProfile.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
+      });
+
+    // --- Обробка updateAvatar ---
+    builder
+      .addCase(updateAvatar.pending, (state) => {
+        state.avatarStatus = "loading";
+      })
+      .addCase(updateAvatar.fulfilled, (state, action: PayloadAction<string>) => {
+        state.avatarStatus = "succeeded";
+        // Оновлюємо аватар прямо в поточному профілі без перезавантаження сторінки
+        if (state.viewedProfile) {
+          state.viewedProfile.avatar = action.payload;
+        }
+      })
+      .addCase(updateAvatar.rejected, (state) => {
+        state.avatarStatus = "failed";
       });
   },
 });
