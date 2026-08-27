@@ -68,7 +68,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
           className="absolute right-0 z-40 mt-3 flex w-[122px] flex-col gap-[6px] rounded-dropdown border border-white/20 bg-main p-4 text-white shadow-lg md:w-[148px] md:border-white"
         >
           <Link
-            to={`/user/${user.id}`}
+            to={`/profile`}
             role="menuitem"
             onClick={() => {
               setOpen(false);
