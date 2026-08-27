@@ -20,6 +20,7 @@ export interface Owner {
 
 export interface Recipe {
   id: string;
+  _id?: string;
   title: string;
   category: {
     name: string;
@@ -35,8 +36,8 @@ export interface Recipe {
   owner?: {
     name?: string;
     avatar?: string;
-  }; 
-  ingredients?: Ingredient[]; 
+  };
+  ingredients?: Ingredient[];
 }
 
 interface RecipesState {
