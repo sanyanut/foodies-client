@@ -4,46 +4,45 @@ import { LongButton } from "../../fragments/LongButton/LongButton";
 import { openModal } from "../../features/ui/modalSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { AVATAR_MOT_FOUND_IMG } from "../../shared/constants.ts";
-import type { RootState } from "../../store/store.ts";
 import {
   clearViewedProfile,
   fetchMyProfile,
   fetchPublicProfile,
+  toggleFollowUser,
   type MyProfile,
 } from "../../features/user/userSlice.ts";
 
 export function UserCard() {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { viewedProfile, isMyProfile, status } = useAppSelector(
-    (state: RootState) => state.user,
-  );
+  const authUserId = useAppSelector((state) => state.auth.user?.id);
+  const { viewedProfile, isMyProfile, status } = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    if (id) {
-      // Є ID в URL — вантажимо чужий публічний профіль
+    if (id && id !== authUserId) {
       dispatch(fetchPublicProfile(id));
     } else {
-      // Немає ID (/profile) — вантажимо свій профіль
       dispatch(fetchMyProfile());
     }
 
-    // Очищаємо профіль при виході зі сторінки, щоб не миготіли старі дані
     return () => {
       dispatch(clearViewedProfile());
     };
-  }, [dispatch, id]); // Перезапускається при зміні id (перехід між профілями)
+  }, [dispatch, id, authUserId]);
 
-  if (status === "loading") {
-    return <div>Loading profile...</div>;
+  if (status === "loading" || !viewedProfile) {
+    return <div className="py-8 text-center text-gray-400">Loading profile...</div>;
   }
 
-  if (!viewedProfile) {
-    return <div>Profile not found</div>;
-  }
+  const isFollowed = "isFollowedByMe" in viewedProfile && viewedProfile.isFollowedByMe;
 
-  // Виносимо кнопку в змінну, щоб TypeScript міг правильно звузити тип (type narrowing)
-  // і щоб уникнути вкладених тернарників прямо в JSX
+  const handleFollowToggle = () => {
+    if (!id) return;
+    void dispatch(
+      toggleFollowUser({ targetUserId: id, isFollowed, isFollowingTab: false }),
+    );
+  };
+
   let actionButton: React.ReactNode;
   if (isMyProfile) {
     actionButton = (
@@ -51,26 +50,15 @@ export function UserCard() {
         Log Out
       </LongButton>
     );
-  } else if ("isFollowedByMe" in viewedProfile && viewedProfile.isFollowedByMe) {
-    // "isFollowedByMe" in viewedProfile — звужує тип до PublicProfile
+  } else if (isFollowed) {
     actionButton = (
-      <LongButton
-        variant="outline"
-        onClick={() => {
-          /* TODO: dispatch unfollow */
-        }}
-      >
+      <LongButton variant="outline" onClick={handleFollowToggle}>
         Unfollow
       </LongButton>
     );
   } else {
     actionButton = (
-      <LongButton
-        variant="solid"
-        onClick={() => {
-          /* TODO: dispatch follow */
-        }}
-      >
+      <LongButton variant="solid" onClick={handleFollowToggle}>
         Follow
       </LongButton>
     );
@@ -83,18 +71,17 @@ export function UserCard() {
         <div className="relative mb-6">
           <div className="h-28 w-28 overflow-hidden rounded-full">
             <img
-              src={viewedProfile.avatar || AVATAR_MOT_FOUND_IMG}
+              src={viewedProfile.avatar ?? AVATAR_MOT_FOUND_IMG}
               alt={viewedProfile.name || "User"}
               className="h-full w-full object-cover"
             />
           </div>
 
-          {/* Кнопка '+' для зміни аватара — тільки на СВОЄМУ профілі */}
           {isMyProfile && (
             <button
+              type="button"
               onClick={() => dispatch(openModal("update-avatar"))}
               className="absolute -bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition-colors"
-              type="button"
             >
               <span className="text-xl font-light leading-none mb-[2px]">+</span>
             </button>
@@ -107,39 +94,36 @@ export function UserCard() {
         </h2>
 
         {/* Статистика */}
-        <div className="grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-[15px]">
-          <span className="text-gray-400">Email:</span>
-          <span className="font-semibold text-black truncate">{viewedProfile.email}</span>
+        <dl className="grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-2 text-[15px]">
+          <dt className="text-gray-400">Email:</dt>
+          <dd className="font-semibold text-black truncate">{viewedProfile.email}</dd>
 
-          <span className="text-gray-400">Added recipes:</span>
-          <span className="font-semibold text-black">{viewedProfile.recipesCount}</span>
+          <dt className="text-gray-400">Added recipes:</dt>
+          <dd className="font-semibold text-black">{viewedProfile.recipesCount}</dd>
 
-          {/* Ці поля є ТІЛЬКИ у відповіді /users/me (мій профіль) */}
           {isMyProfile && (
             <>
-              <span className="text-gray-400">Favorites:</span>
-              <span className="font-semibold text-black">
+              <dt className="text-gray-400">Favorites:</dt>
+              <dd className="font-semibold text-black">
                 {(viewedProfile as MyProfile).favoritesCount}
-              </span>
+              </dd>
             </>
           )}
 
-          <span className="text-gray-400">Followers:</span>
-          <span className="font-semibold text-black">{viewedProfile.followersCount}</span>
+          <dt className="text-gray-400">Followers:</dt>
+          <dd className="font-semibold text-black">{viewedProfile.followersCount}</dd>
 
-          {/* Following — теж тільки у моєму профілі */}
           {isMyProfile && (
             <>
-              <span className="text-gray-400">Following:</span>
-              <span className="font-semibold text-black">
+              <dt className="text-gray-400">Following:</dt>
+              <dd className="font-semibold text-black">
                 {(viewedProfile as MyProfile).followingCount}
-              </span>
+              </dd>
             </>
           )}
-        </div>
+        </dl>
       </section>
 
-      {/* Кнопка — обмежена шириною як картка, відцентрована */}
       <div className="w-full max-w-[349px]">{actionButton}</div>
     </>
   );

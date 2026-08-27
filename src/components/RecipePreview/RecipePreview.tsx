@@ -11,18 +11,21 @@ export interface IRecipePreview {
 
 interface IRecipePreviewProps {
   recipe: IRecipePreview;
-  isOwner: boolean; // if true, show delete button
-  onDelete?: (id: string) => void;
+  isOwner: boolean;
+  onDelete: (id: string) => void;
 }
 
 export function RecipePreview({ recipe, isOwner, onDelete }: IRecipePreviewProps) {
-  const id = recipe._id || recipe.id || "";
+  const recipeId = recipe.id ?? recipe._id ?? "";
+
+  const btnClass =
+    "flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white";
 
   return (
     <div className="flex items-center gap-4 border-b border-gray-200 py-6 last:border-b-0">
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-[20px]">
         <img
-          src={recipe.thumb || "https://placehold.co/100x100"}
+          src={recipe.thumb ?? "https://placehold.co/100x100"}
           alt={recipe.title}
           className="h-full w-full object-cover"
         />
@@ -38,17 +41,15 @@ export function RecipePreview({ recipe, isOwner, onDelete }: IRecipePreviewProps
       </div>
 
       <div className="flex flex-col gap-2 flex-shrink-0">
-        <Link
-          to={`/recipe/${id}`}
-          className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white"
-        >
+        <Link to={`/recipe/${recipeId}`} className={btnClass}>
           <Icon name="arrow-up-right" className="h-4 w-4" />
         </Link>
-        {isOwner && onDelete && (
+
+        {isOwner && (
           <button
             type="button"
-            onClick={() => onDelete(id)}
-            className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white cursor-pointer"
+            onClick={() => onDelete(recipeId)}
+            className={`${btnClass} cursor-pointer`}
           >
             <Icon name="trash" className="h-4 w-4" />
           </button>
