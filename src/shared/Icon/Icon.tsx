@@ -13,7 +13,6 @@ interface IconProps {
     | "eye-off"
     | "arrow-up-right"
     | "trash"
-    | "heart"
     | "facebook"
     | "instagram"
     | "youtube";
