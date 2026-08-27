@@ -1,42 +1,30 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
-import { openModal } from "../../features/ui/modalSlice.ts";
+import { Hero } from "../../fragments/Hero/Hero.tsx";
+import { Categories } from "../../components/Categories/Categories.tsx";
+import { Recipes } from "../../components/Recipes/Recipes.tsx";
 
 /**
- * Placeholder HomePage (full page is out of scope for the Header + Modals task).
- * The "Add recipe" CTA exercises the auth flow: guests get the Sign In modal,
- * authed users go to AddRecipePage.
+ * HomePage: Hero (always) + either the Categories grid or the Recipes catalog.
+ * Picking a category (or "All categories") swaps Categories for Recipes in place;
+ * Back swaps them back. Recipes reserves its height while loading so the page
+ * doesn't collapse and jump during the swap. `selected` holds the chosen
+ * category name (null = "All categories"); `undefined` = Categories grid.
  */
 export const HomePage = () => {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleAddRecipe = () => {
-    if (isAuthenticated) navigate("/add-recipe");
-    else dispatch(openModal("signin"));
-  };
+  const [selected, setSelected] = useState<string | null | undefined>(undefined);
 
   return (
-    <section className="mx-auto max-w-[1440px] px-4 py-16 text-center md:px-8 lg:px-20">
-      <h1 className="mx-auto max-w-[850px] text-[28px] font-extrabold uppercase leading-tight tracking-[-0.02em] md:text-[50px]">
-        Improve your culinary talents
-      </h1>
-      <p className="mx-auto mt-6 max-w-[540px] text-[16px] text-gray">
-        Amazing recipes for beginners in the world of cooking, enveloping you in the
-        aromas and tastes of various cuisines.
-      </p>
-      <button
-        type="button"
-        onClick={handleAddRecipe}
-        className="mt-8 rounded-full bg-main px-8 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark"
-      >
-        Add recipe
-      </button>
-      <p className="mt-16 text-[13px] text-gray">
-        HomePage — placeholder (out of scope for Header + Modals).
-      </p>
-    </section>
+    <>
+      <Hero />
+      {selected === undefined ? (
+        <Categories
+          onSelectCategory={(name) => setSelected(name)}
+          onSelectAll={() => setSelected(null)}
+        />
+      ) : (
+        <Recipes categoryName={selected} onBack={() => setSelected(undefined)} />
+      )}
+    </>
   );
 };
