@@ -19,6 +19,9 @@ export function UserCard() {
   const { viewedProfile, isMyProfile, status } = useAppSelector((state) => state.user);
 
   useEffect(() => {
+    // authUserId === undefined означає що токен ще перевіряється — чекаємо
+    if (authUserId === undefined) return;
+
     if (id && id !== authUserId) {
       dispatch(fetchPublicProfile(id));
     } else {
