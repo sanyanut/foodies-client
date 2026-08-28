@@ -41,7 +41,7 @@ export function RecipePreview({ recipe, isOwner, onDelete }: IRecipePreviewProps
       </div>
 
       <div className="flex flex-row gap-2 flex-shrink-0">
-        <Link to={`/recipes/${recipeId}`} className={btnClass}>
+        <Link to={`/recipe/${recipeId}`} className={btnClass}>
           <Icon name="arrow-up-right" className="h-4 w-4" />
         </Link>
 

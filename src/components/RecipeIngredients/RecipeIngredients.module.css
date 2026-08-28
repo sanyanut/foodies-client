@@ -41,6 +41,23 @@
   border-radius: 30px;
   padding: 6px;
   background-color: #ffffff;
+  flex-shrink: 0;
+}
+
+.imagePlaceholder {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bfbebe;
+  font-weight: 700;
+  font-size: 28px;
+  text-transform: uppercase;
 }
 
 .info {
