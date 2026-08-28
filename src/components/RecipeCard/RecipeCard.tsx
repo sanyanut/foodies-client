@@ -38,7 +38,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
   return (
     <article className="flex min-w-0 flex-col">
       <Link
-        to={`/recipes/${recipe.id}`}
+        to={`/recipe/${recipe.id}`}
         className="group block aspect-square overflow-hidden rounded-[20px] bg-gray/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
       >
         {imageUrl ? (
@@ -56,7 +56,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
       </Link>
 
       <Link
-        to={`/recipes/${recipe.id}`}
+        to={`/recipe/${recipe.id}`}
         className="mt-[16px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
       >
         <h3 className="truncate text-[16px] font-extrabold uppercase leading-[24px] tracking-[-0.32px]">
@@ -113,7 +113,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
           </button>
 
           <Link
-            to={`/recipes/${recipe.id}`}
+            to={`/recipe/${recipe.id}`}
             aria-label={`Open ${recipe.title}`}
             className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-gray/60 text-main transition-colors hover:border-main focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
           >

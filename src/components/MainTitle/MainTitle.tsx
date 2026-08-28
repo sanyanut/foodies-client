@@ -24,22 +24,18 @@ export const MainTitle = ({
   // Для категорій на мобільному текст сірий (#BFBEBE), на десктопі — темний (#1A1A1A)
   const descriptionColor =
     variant === "category" ? "text-gray md:text-dark" : "text-dark";
-  // За Figma опис категорій фіксований на 531px (і на планшеті, і на десктопі) —
-  // саме ця ширина дає перенос рівно у 2 рядки.
   const descriptionWidth =
     variant === "category"
       ? "max-w-[343px] md:max-w-[531px]"
       : "max-w-[343px] md:max-w-[443px]";
 
   return (
-    <div
-      className={`flex flex-col gap-[16px] md:gap-[20px] mb-[32px] md:mb-[40px] ${className}`}
-    >
-      <Tag className="font-extrabold uppercase text-main text-[28px] leading-[32px] tracking-[-0.56px] md:text-[40px] md:leading-[44px] md:tracking-[-0.8px]">
+    <div className={`flex flex-col gap-4 md:gap-5 mb-8 md:mb-10 ${className}`}>
+      <Tag className="font-extrabold uppercase text-main text-[28px] leading-8 tracking-[-0.56px] md:text-[40px] md:leading-11 md:tracking-[-0.8px]">
         {title}
       </Tag>
       <p
-        className={`font-medium ${descriptionWidth} text-[14px] leading-[20px] tracking-[-0.28px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px] ${descriptionColor}`}
+        className={`font-medium ${descriptionWidth} text-[14px] leading-5 tracking-[-0.28px] md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${descriptionColor}`}
       >
         {description}
       </p>

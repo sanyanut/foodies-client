@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { openModal } from "../../features/ui/modalSlice.ts";
 import { Icon } from "../../shared/Icon/Icon.tsx";
+import { AVATAR_MOT_FOUND_IMG } from "../../shared/constants.ts";
 
 /** Authenticated user chip: avatar + name + chevron on a dark pill, with a dark
  *  dropdown (black + white border) — the same on light and dark headers.
@@ -31,7 +32,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
   }, [open]);
 
   if (!user) return null;
-  const initial = user.name.trim().charAt(0).toUpperCase() || "U";
+  // const initial = user.name.trim().charAt(0).toUpperCase() || "U";
 
   return (
     <div className="relative" ref={containerRef}>
@@ -42,17 +43,11 @@ export const UserBar = ({ onAction }: UserBarProps) => {
         aria-haspopup="menu"
         aria-expanded={open}
       >
-        {user.avatar ? (
-          <img
-            src={user.avatar}
-            alt=""
-            className="h-[50px] w-[50px] rounded-full object-cover"
-          />
-        ) : (
-          <span className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-gray text-[15px] font-bold text-white">
-            {initial}
-          </span>
-        )}
+        <img
+          src={user?.avatar || AVATAR_MOT_FOUND_IMG}
+          alt=""
+          className="h-[50px] w-[50px] rounded-full object-cover"
+        />
         <span className="text-[12px] font-semibold uppercase tracking-[-0.02em]">
           {user.name}
         </span>
@@ -68,7 +63,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
           className="absolute right-0 z-40 mt-3 flex w-[122px] flex-col gap-[6px] rounded-dropdown border border-white/20 bg-main p-4 text-white shadow-lg md:w-[148px] md:border-white"
         >
           <Link
-            to={`/user/${user.id}`}
+            to={`/profile`}
             role="menuitem"
             onClick={() => {
               setOpen(false);

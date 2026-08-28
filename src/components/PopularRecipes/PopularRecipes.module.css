@@ -1,0 +1,177 @@
+.popularSection {
+  margin-top: 60px;
+  margin-bottom: 80px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+  color: #050505;
+}
+
+.popularGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.popularCard {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.popularCard:hover {
+  transform: translateY(-4px);
+}
+
+.popImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.popContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.popHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.popTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #050505;
+  margin: 0;
+}
+
+.popDescription {
+  font-size: 14px;
+  color: #7e7e7e;
+  line-height: 1.4;
+  margin-bottom: 20px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.popFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.authorSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.authorAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.authorAvatarPlaceholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #8baa36;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.authorName {
+  font-size: 14px;
+  color: #050505;
+  font-weight: 500;
+}
+
+/* Блок для іконок у кружочках */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.iconButton {
+  border: 1px solid var(--gray, rgba(0, 0, 0, 0.15));
+  border-radius: 30px;
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  color: #050505; /* Задаємо початковий колір для currentColor */
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.heartIcon,
+.arrowIcon {
+  stroke: currentColor; /* Використовуємо currentColor, щоб іконка слухалась кольору кнопки */
+  fill: transparent;
+}
+
+.iconButton:hover {
+  background-color: #050505;
+  border-color: #050505;
+  color: #fff; /* При наведенні змінюємо колір тексту/іконки на білий */
+}
+
+.iconButton:hover .heartIcon,
+.iconButton:hover .arrowIcon {
+  stroke: #fff;
+}
+
+/* Активний стан кнопки "улюблене" */
+.iconButtonActive {
+  background-color: #050505;
+  border-color: #050505;
+  color: #fff;
+}
+
+.iconButtonActive .heartIcon {
+  stroke: #fff;
+  fill: #fff;
+}
+
+/* Адаптивність */
+@media (max-width: 1024px) {
+  .popularGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .popularGrid {
+    grid-template-columns: 1fr;
+  }
+}

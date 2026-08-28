@@ -2,15 +2,9 @@ import { Breadcrumbs } from "../../components/Breadcrumbs/Breadcrumbs";
 import { MainTitle } from "../../components/MainTitle/MainTitle";
 import { AddRecipeForm } from "../../components/AddRecipeForm/AddRecipeForm";
 
-/**
- * Сторінка створення рецепта (Add Recipe Page).
- *
- * Рендериться всередині SharedLayout (Header + Footer надаються шаблоном), тож
- * тут — лише контент сторінки: хлібні крихти, заголовок з описом і форма.
- */
 export const AddRecipePage = () => {
   return (
-    <div className="mx-auto w-full max-w-[1440px] flex-1 px-[16px] pt-[64px] pb-16 md:px-[32px] lg:px-[80px] lg:pt-[80px]">
+    <div className="mx-auto w-full max-w-360 flex-1 px-4 pt-16 pb-8 md:px-8 md:pb-20 min-[1440px]:px-20 min-[1440px]:pt-20 min-[1440px]:pb-30">
       <Breadcrumbs currentPage="Add recipe" />
       <MainTitle
         title="Add recipe"

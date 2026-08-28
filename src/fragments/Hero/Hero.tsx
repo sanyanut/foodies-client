@@ -9,7 +9,7 @@ export const Hero = () => {
   const navigate = useNavigate();
 
   const handleAddRecipe = () => {
-    if (isAuthenticated) navigate("/add-recipe");
+    if (isAuthenticated) navigate("/recipe/add");
     else dispatch(openModal("signin"));
   };
 

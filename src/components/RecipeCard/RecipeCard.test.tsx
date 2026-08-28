@@ -57,7 +57,7 @@ describe("RecipeCard", () => {
     expect(screen.getByText("GoIT")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Open Bakewell Tart" })).toHaveAttribute(
       "href",
-      "/recipes/recipe-1",
+      "/recipe/recipe-1",
     );
   });
 

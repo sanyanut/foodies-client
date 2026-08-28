@@ -1,41 +1,35 @@
-/**
- * Компонент завантаження та попереднього перегляду фотографії рецепта.
- *
- * Призначення:
- * - Надає інтерактивну зону для вибору файлу зображення (через прихований `<input type="file" />`).
- * - Створює локальне прев'ю обраного фото (`URL.createObjectURL`).
- * - Дозволяє замінити завантажене зображення кнопкою "Upload another photo".
- * - Повністю інтегрований із `react-hook-form`: реєструє поле `thumb`, валідує обов'язковість фото та підтримує навігацію клавіатурою (Tab / Focus).
- */
-
 import React, { useRef, useState, useEffect } from "react";
-import { useFormContext } from "react-hook-form";
-import type { RecipeFormData } from "./AddRecipeForm";
-
+import { useFormikContext } from "formik";
+import { Icon } from "../../shared/Icon/Icon";
+import type { RecipeFormValues } from "./recipeValidationSchema";
 export const RecipeImageUpload = () => {
-  const {
-    register,
-    setValue,
-    clearErrors,
-    trigger,
-    formState: { errors },
-  } = useFormContext<RecipeFormData>();
+  const { values, setFieldValue, setFieldTouched, errors, touched } =
+    useFormikContext<RecipeFormValues>();
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    register("thumb", { required: "Recipe image is required" });
-  }, [register]);
+    if (values.thumb) {
+      const objectUrl = URL.createObjectURL(values.thumb);
+      setPreviewUrl(objectUrl);
+
+      return () => {
+        URL.revokeObjectURL(objectUrl);
+      };
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [values.thumb]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setValue("thumb", file, { shouldValidate: true, shouldDirty: true });
-      clearErrors("thumb");
-
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
+      // Validate with the new file (clears the "required" error); mark touched
+      // WITHOUT re-validating — a second validation would run against the stale
+      // (still-empty) values and immediately re-add the error.
+      setFieldValue("thumb", file, true);
+      setFieldTouched("thumb", true, false);
     }
   };
 
@@ -44,11 +38,13 @@ export const RecipeImageUpload = () => {
   };
 
   const handleBlur = () => {
-    trigger("thumb");
+    setFieldTouched("thumb", true, true);
   };
 
+  const isError = Boolean(touched.thumb && errors.thumb);
+
   return (
-    <div className="flex w-full flex-col items-center lg:w-[551px] lg:shrink-0">
+    <div className="flex w-full flex-col items-center min-[1440px]:w-137.75 min-[1440px]:shrink-0">
       {/* Прихований системний інпут */}
       <input
         ref={fileInputRef}
@@ -59,37 +55,38 @@ export const RecipeImageUpload = () => {
       />
 
       {!previewUrl ? (
-        /* Стан 1: Порожній блок */
+        /* Стан 1: Порожній блок (Dropzone) */
         <button
           type="button"
           tabIndex={0}
           onClick={handleOpenFileDialog}
           onBlur={handleBlur}
-          className="group flex h-[318px] w-full cursor-pointer flex-col items-center justify-center rounded-[30px] border border-dashed border-gray transition-all duration-200 hover:border-main focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:h-[400px] lg:h-[400px] lg:w-[551px]"
+          className={`group flex h-79.5 w-full cursor-pointer flex-col items-center justify-center rounded-modal border border-dashed transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:h-100 min-[1440px]:h-100 min-[1440px]:w-137.75 ${
+            isError
+              ? "border-[#AE0000] bg-[#FFF5F5]"
+              : "border-gray hover:border-main bg-[#FAFAFA]"
+          }`}
         >
-          <div className="flex h-[50px] w-[50px] items-center justify-center rounded-full border border-main transition-transform duration-200 group-hover:scale-105 md:h-[64px] md:w-[64px]">
-            <svg
-              className="h-[18.75px] w-[18.75px] text-main md:h-[24px] md:w-[24px]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-              <circle cx="12" cy="13" r="4" />
-            </svg>
-          </div>
+          {/* Іконка зі спрайту */}
+          <Icon
+            name="camera"
+            className={`h-12.5 w-12.5 transition-colors duration-200 md:h-16 md:w-16 ${
+              isError ? "text-[#AE0000]" : "text-gray group-hover:text-main"
+            }`}
+          />
 
-          <span className="mt-[8px] font-medium text-main underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] md:mt-[16px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]">
+          <span
+            className={`mt-4 text-[14px] font-medium leading-5 tracking-[-0.28px] underline underline-offset-4 md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
+              isError ? "text-[#AE0000]" : "text-main"
+            }`}
+          >
             Upload a photo
           </span>
         </button>
       ) : (
         /* Стан 2: Фото завантажено */
         <div className="flex w-full flex-col items-center">
-          <div className="h-[318px] w-full overflow-hidden rounded-[30px] md:h-[400px] lg:h-[400px] lg:w-[551px]">
+          <div className="h-79.5 w-full overflow-hidden rounded-modal md:h-100 min-[1440px]:h-100 min-[1440px]:w-137.75">
             <img
               src={previewUrl}
               alt="Recipe preview"
@@ -102,17 +99,17 @@ export const RecipeImageUpload = () => {
             tabIndex={0}
             onClick={handleOpenFileDialog}
             onBlur={handleBlur}
-            className="mt-[16px] self-center rounded font-medium text-main underline underline-offset-4 text-[14px] leading-[20px] tracking-[-0.28px] transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:mt-[20px] md:text-[16px] md:leading-[24px] md:tracking-[-0.32px]"
+            className="mt-4 self-center rounded text-[14px] font-medium leading-5 tracking-[-0.28px] text-main underline underline-offset-4 transition-opacity hover:opacity-70 focus:outline-none focus:ring-2 focus:ring-main focus:ring-offset-2 md:mt-5 md:text-[16px] md:leading-6 md:tracking-[-0.32px]"
           >
             Upload another photo
           </button>
         </div>
       )}
 
-      {/* Повідомлення про помилку під блоком фото */}
-      {errors.thumb && (
-        <span className="mt-2 text-center text-xs text-red-500">
-          {errors.thumb.message || "Recipe image is required"}
+      {/* Повідомлення про помилку */}
+      {isError && (
+        <span className="mt-2 text-center text-xs font-medium text-[#AE0000]">
+          {errors.thumb as string}
         </span>
       )}
     </div>
