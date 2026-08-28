@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { openModal } from "../../features/ui/modalSlice.ts";
+import { Testimonials } from "../../fragments/Testimonials/Testimonials.tsx";
 
 /**
  * Placeholder HomePage (full page is out of scope for the Header + Modals task).
@@ -37,6 +38,7 @@ export const HomePage = () => {
       <p className="mt-16 text-[13px] text-gray">
         HomePage — placeholder (out of scope for Header + Modals).
       </p>
+      <Testimonials />
     </section>
   );
 };
