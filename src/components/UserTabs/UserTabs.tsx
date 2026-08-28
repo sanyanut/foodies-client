@@ -63,6 +63,8 @@ export function UserTabs() {
       } else if (isMyProfile) {
         endpoint = "/recipes/own";
       } else {
+        // id може бути undefined під час race condition при переході на /profile
+        if (!id) return;
         endpoint = `/users/${id}/recipes`;
       }
       void dispatch(fetchTabRecipes({ endpoint, page: tabCurrentPage, limit: 9 }));
@@ -176,7 +178,7 @@ export function UserTabs() {
                   <RecipePreview
                     key={recipe.id ?? recipe._id ?? index}
                     recipe={recipe}
-                    isOwner={isMyProfile && activeTab === "recipes"}
+                    isOwner={isMyProfile}
                     onDelete={handleDeleteRecipe}
                   />
                 ))}
