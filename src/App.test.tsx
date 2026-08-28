@@ -1,17 +1,15 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 
 import { store } from "./store/store.ts";
 import App from "./App.tsx";
 
+// App renders its own <BrowserRouter>, so the test must not add another router.
 const renderApp = () =>
   render(
     <Provider store={store}>
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
+      <App />
     </Provider>,
   );
 
