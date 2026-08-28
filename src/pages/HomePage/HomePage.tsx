@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Hero } from "../../fragments/Hero/Hero.tsx";
 import { Categories } from "../../components/Categories/Categories.tsx";
 import { Recipes } from "../../components/Recipes/Recipes.tsx";
+import { Testimonials } from "../../fragments/Testimonials/Testimonials.tsx";
 
 /**
  * HomePage: Hero (always) + either the Categories grid or the Recipes catalog.
@@ -25,6 +26,7 @@ export const HomePage = () => {
       ) : (
         <Recipes categoryName={selected} onBack={() => setSelected(undefined)} />
       )}
+      <Testimonials />
     </>
   );
 };
