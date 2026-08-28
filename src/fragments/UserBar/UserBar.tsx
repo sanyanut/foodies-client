@@ -65,7 +65,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-40 mt-3 flex w-52 flex-col rounded-[20px] border border-white bg-main px-5 py-4 text-white shadow-lg"
+          className="absolute right-0 z-40 mt-3 flex w-[122px] flex-col gap-[6px] rounded-dropdown border border-white/20 bg-main p-4 text-white shadow-lg md:w-[148px] md:border-white"
         >
           <Link
             to={`/user/${user.id}`}
@@ -74,7 +74,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
               setOpen(false);
               onAction?.();
             }}
-            className="py-1.5 text-[14px] font-medium uppercase tracking-[-0.02em] transition-colors hover:text-white/60"
+            className="text-[12px] font-bold uppercase tracking-[-0.24px] transition-colors hover:text-white/60"
           >
             Profile
           </Link>
@@ -86,10 +86,10 @@ export const UserBar = ({ onAction }: UserBarProps) => {
               dispatch(openModal("logout"));
               onAction?.();
             }}
-            className="flex items-center gap-1 py-1.5 text-left text-[14px] font-medium uppercase tracking-[-0.02em] transition-colors hover:text-white/60"
+            className="flex items-center gap-[2px] text-left text-[12px] font-bold uppercase tracking-[-0.24px] transition-colors hover:text-white/60"
           >
             Log out
-            <Icon name="arrow-up-right" className="h-4 w-4" />
+            <Icon name="arrow-up-right" className="h-[18px] w-[18px]" />
           </button>
         </div>
       )}
