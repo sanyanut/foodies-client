@@ -56,7 +56,7 @@ export const Nav = ({ authed, variant = "horizontal", onNavigate }: NavProps) =>
           <li>
             {authed ? (
               <NavLink
-                to="/add-recipe"
+                to="/recipe/add"
                 onClick={onNavigate}
                 className={({ isActive }) => itemClass(isActive)}
               >

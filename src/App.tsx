@@ -14,15 +14,15 @@ export default function App() {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="recipes/:id" element={<RecipeDetailsPage />} />
           <Route
-            path="add-recipe"
+            path="recipe/add"
             element={
               <ProtectedRoute>
                 <AddRecipePage />
               </ProtectedRoute>
             }
           />
+          <Route path="recipe/:id" element={<RecipeDetailsPage />} />
           <Route
             path="profile"
             element={

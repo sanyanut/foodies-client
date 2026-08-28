@@ -155,7 +155,7 @@ export const AddRecipeForm: React.FC = () => {
                 <FormTextarea
                   name="instructions"
                   placeholder="Enter recipe"
-                  maxLength={3000}
+                  maxLength={1000}
                 />
               </div>
 

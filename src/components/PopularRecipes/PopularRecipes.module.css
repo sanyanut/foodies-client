@@ -151,6 +151,18 @@
   stroke: #fff;
 }
 
+/* Активний стан кнопки "улюблене" */
+.iconButtonActive {
+  background-color: #050505;
+  border-color: #050505;
+  color: #fff;
+}
+
+.iconButtonActive .heartIcon {
+  stroke: #fff;
+  fill: #fff;
+}
+
 /* Адаптивність */
 @media (max-width: 1024px) {
   .popularGrid {

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import type { RecipeLookup } from "../../features/recipes/types";
 
 interface RecipeSelectProps {
@@ -21,24 +21,53 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
   className = "",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  // Клієнтський пошук по опціях (як у RecipeFilters на сторінці рецептів).
+  const [query, setQuery] = useState("");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const selectedOption = options.find((opt) => opt.id === value || opt.name === value);
 
-  // Закриття списку при кліку поза межами
+  const close = () => {
+    setIsOpen(false);
+    setQuery("");
+  };
+
+  // Закриття списку при кліку поза межами або клавішею Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+        close();
       }
     };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close();
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
+
+  // Фокус на поле пошуку при відкритті
+  useEffect(() => {
+    if (isOpen) inputRef.current?.focus();
+  }, [isOpen]);
+
+  const trimmedQuery = query.trim().toLowerCase();
+  const filteredOptions = useMemo(
+    () =>
+      trimmedQuery
+        ? options.filter((option) => option.name.toLowerCase().includes(trimmedQuery))
+        : options,
+    [options, trimmedQuery],
+  );
 
   const handleSelect = (option: RecipeLookup) => {
     onChange(option);
-    setIsOpen(false);
+    close();
   };
 
   return (
@@ -52,7 +81,7 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
       {/* Кнопка вибору (додано клас group) */}
       <button
         type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => (isOpen ? close() : setIsOpen(true))}
         className={`group flex h-12 w-full items-center justify-between rounded-dropdown border bg-transparent px-3.5 text-[14px] leading-5 tracking-[-0.28px] transition-colors md:h-14 md:px-4.5 md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
           error ? "border-[#AE0000]" : "border-gray hover:border-main"
         }`}
@@ -82,27 +111,43 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
         </svg>
       </button>
 
-      {/* Спливне вікно (Dropdown menu) */}
+      {/* Спливне вікно (Dropdown menu) з полем пошуку */}
       {isOpen && (
-        <ul className="absolute top-[calc(100%+6px)] z-50 max-h-55 w-full overflow-y-auto rounded-dropdown border border-[#F0F0F0] bg-white p-4 shadow-lg">
-          {options.length === 0 ? (
-            <li className="py-2 text-center text-sm text-gray">No options available</li>
-          ) : (
-            options.map((option) => (
-              <li key={option.id}>
-                <button
-                  type="button"
-                  onClick={() => handleSelect(option)}
-                  className={`w-full py-1.5 text-left text-[14px] font-medium leading-5 tracking-[-0.28px] transition-colors hover:text-main md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
-                    selectedOption?.id === option.id ? "font-bold text-main" : "text-gray"
-                  }`}
-                >
-                  {option.name}
-                </button>
-              </li>
-            ))
-          )}
-        </ul>
+        <div className="absolute top-[calc(100%+6px)] z-50 w-full rounded-dropdown border border-[#F0F0F0] bg-white p-4 shadow-lg">
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search…"
+            aria-label={`Search ${(label || placeholder).toLowerCase()}`}
+            className="mb-3 w-full rounded-dropdown border border-gray/60 px-3.5 py-2 text-[14px] leading-5 text-main outline-none transition-colors placeholder:text-gray focus:border-main md:text-[16px]"
+          />
+
+          <ul className="max-h-55 w-full overflow-y-auto">
+            {options.length === 0 ? (
+              <li className="py-2 text-center text-sm text-gray">No options available</li>
+            ) : filteredOptions.length === 0 ? (
+              <li className="py-2 text-center text-sm text-gray">No matches found</li>
+            ) : (
+              filteredOptions.map((option) => (
+                <li key={option.id}>
+                  <button
+                    type="button"
+                    onClick={() => handleSelect(option)}
+                    className={`w-full py-1.5 text-left text-[14px] font-medium leading-5 tracking-[-0.28px] transition-colors hover:text-main md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
+                      selectedOption?.id === option.id
+                        ? "font-bold text-main"
+                        : "text-gray"
+                    }`}
+                  >
+                    {option.name}
+                  </button>
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
       )}
 
       {/* Повідомлення про помилку */}

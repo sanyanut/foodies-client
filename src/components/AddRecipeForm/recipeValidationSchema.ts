@@ -81,6 +81,6 @@ export const recipeValidationSchema = Yup.object().shape({
 
   instructions: Yup.string()
     .trim()
-    .max(3000, "Preparation instructions must be 3000 characters or less")
+    .max(1000, "Preparation instructions must be 1000 characters or less")
     .required("Please provide recipe preparation instructions"),
 });

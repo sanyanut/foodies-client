@@ -25,8 +25,11 @@ export const RecipeImageUpload = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFieldValue("thumb", file);
-      setFieldTouched("thumb", true, true);
+      // Validate with the new file (clears the "required" error); mark touched
+      // WITHOUT re-validating — a second validation would run against the stale
+      // (still-empty) values and immediately re-add the error.
+      setFieldValue("thumb", file, true);
+      setFieldTouched("thumb", true, false);
     }
   };
 
