@@ -2,6 +2,7 @@ import { useAppSelector } from "../../../store/hooks.ts";
 import { SignInModal } from "../SignInModal/SignInModal.tsx";
 import { SignUpModal } from "../SignUpModal/SignUpModal.tsx";
 import { LogOutModal } from "../LogOutModal/LogOutModal.tsx";
+import { UpdateAvatarModal } from "../UpdateAvatarModal/UpdateAvatarModal.tsx";
 
 /**
  * Renders whichever auth modal is currently active in the store. Mounted once in
@@ -13,5 +14,6 @@ export const ModalRoot = () => {
   if (active === "signin") return <SignInModal />;
   if (active === "signup") return <SignUpModal />;
   if (active === "logout") return <LogOutModal />;
+  if (active === "update-avatar") return <UpdateAvatarModal />;
   return null;
 };

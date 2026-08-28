@@ -4,7 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // Which auth modal (if any) is currently open. Modals are opened from many
 // places (Header AuthBar/UserBar, Hero, RecipeCard...), so the active modal
 // lives in the store rather than in component state.
-export type ModalType = "signin" | "signup" | "logout";
+export type ModalType = "signin" | "signup" | "logout" | "update-avatar";
 
 interface ModalState {
   activeModal: ModalType | null;
