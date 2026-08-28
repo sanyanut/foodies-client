@@ -45,8 +45,8 @@ export class ApiError extends Error {
 
 interface RequestOptions {
   method?: string;
-  /** JSON body — serialized automatically. */
-  body?: unknown;
+  /** JSON body or FormData (for file uploads) — handled automatically. */
+  body?: unknown | FormData;
   /** Attach the Bearer access token (and refresh-on-401). */
   auth?: boolean;
   signal?: AbortSignal;

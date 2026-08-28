@@ -1,0 +1,53 @@
+.preparationSection {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.sectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #050505;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.preparationText {
+  font-size: 16px;
+  line-height: 24px;
+  color: rgba(5, 5, 5, 0.8);
+  white-space: pre-line;
+  margin-bottom: 32px;
+}
+
+.favoriteButton {
+  border: 1px solid var(--gray, rgba(0, 0, 0, 0.15));
+  border-radius: 30px;
+  padding: 16px 32px;
+  width: 215px;
+  height: 56px;
+  background: transparent;
+  color: #050505;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.favoriteButton:hover {
+  background-color: #050505;
+  color: #ffffff;
+  border-color: #050505;
+}
+
+@media (min-width: 768px) {
+  .preparationText {
+    font-size: 16px;
+  }
+}
