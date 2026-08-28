@@ -1,6 +1,11 @@
 import { apiRequest } from "../../lib/apiClient.ts";
 
-import type { RecipeLookup, RecipesQuery, RecipesResponse } from "./types.ts";
+import type {
+  RecipeLookup,
+  RecipesQuery,
+  RecipesResponse,
+  RecipeSummary,
+} from "./types.ts";
 
 function buildRecipesPath(query: RecipesQuery): string {
   const params = new URLSearchParams();
@@ -33,4 +38,16 @@ export function getAreas(signal?: AbortSignal): Promise<RecipeLookup[]> {
 
 export function getCategories(signal?: AbortSignal): Promise<RecipeLookup[]> {
   return apiRequest<RecipeLookup[]>("/categories", { signal });
+}
+
+export function createRecipe(
+  formData: FormData,
+  signal?: AbortSignal,
+): Promise<RecipeSummary> {
+  return apiRequest<RecipeSummary>("/recipes", {
+    method: "POST",
+    body: formData,
+    auth: true,
+    signal,
+  });
 }

@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import type { Recipe } from "../../features/recipes/recipeSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { toggleFavorite } from "../../features/recipes/favoritesSlice";
+import { openModal } from "../../features/ui/modalSlice";
 import styles from "./PopularRecipes.module.css";
 
 interface IconProps {
@@ -21,6 +24,10 @@ interface PopularRecipesProps {
 }
 
 export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
+  const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const favoriteIds = useAppSelector((state) => state.favorites.ids);
+
   if (!recipes || recipes.length === 0) return null;
 
   return (
@@ -29,6 +36,15 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
       <div className={styles.popularGrid}>
         {recipes.slice(0, 4).map((recipe) => {
           const recipeId = recipe.id || recipe._id;
+          const isFavorite = recipeId ? favoriteIds.includes(recipeId) : false;
+
+          const handleToggleFavorite = () => {
+            if (!isAuthenticated) {
+              dispatch(openModal("signin"));
+              return;
+            }
+            if (recipeId) void dispatch(toggleFavorite(recipeId));
+          };
 
           const shortDescription = recipe.instructions
             ? recipe.instructions.substring(0, 130) + "..."
@@ -36,7 +52,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
 
           return (
             <div key={recipeId} className={styles.popularCard}>
-              <Link to={`/recipes/${recipeId}`}>
+              <Link to={`/recipe/${recipeId}`}>
                 <img
                   src={recipe.thumb || "https://via.placeholder.com/150"}
                   alt={recipe.title}
@@ -45,7 +61,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
               </Link>
               <div className={styles.popContent}>
                 <div className={styles.popHeader}>
-                  <Link to={`/recipes/${recipeId}`} style={{ textDecoration: "none" }}>
+                  <Link to={`/recipe/${recipeId}`} style={{ textDecoration: "none" }}>
                     <h4 className={styles.popTitle}>{recipe.title}</h4>
                   </Link>
                 </div>
@@ -77,9 +93,15 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                   {/* Кнопки у кружечках відповідно до макета */}
                   <div className={styles.cardActions}>
                     <button
-                      className={styles.iconButton}
+                      className={`${styles.iconButton} ${
+                        isFavorite ? styles.iconButtonActive : ""
+                      }`}
                       type="button"
-                      aria-label="Add to favorites"
+                      onClick={handleToggleFavorite}
+                      aria-pressed={isFavorite}
+                      aria-label={
+                        isFavorite ? "Remove from favorites" : "Add to favorites"
+                      }
                     >
                       <Icon
                         name="icon-heart"
@@ -89,7 +111,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                       />
                     </button>
                     <Link
-                      to={`/recipes/${recipeId}`}
+                      to={`/recipe/${recipeId}`}
                       className={styles.iconButton}
                       aria-label="View recipe"
                     >

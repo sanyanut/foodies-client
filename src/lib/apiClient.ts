@@ -62,8 +62,6 @@ function buildInit(opts: RequestOptions, token: string | null): RequestInit {
   };
   if (opts.body !== undefined) {
     if (opts.body instanceof FormData) {
-      // FormData: браузер сам виставить Content-Type: multipart/form-data з правильним boundary
-      // НЕ встановлюємо Content-Type вручну і НЕ серіалізуємо!
       init.body = opts.body;
     } else {
       headers["Content-Type"] = "application/json";
