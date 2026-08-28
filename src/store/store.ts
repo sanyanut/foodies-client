@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import healthReducer from "../features/health/healthSlice.ts";
 import authReducer from "../features/auth/authSlice.ts";
 import modalReducer from "../features/ui/modalSlice.ts";
+import recipeReducer from "../features/recipes/recipeSlice.ts";
 import lookupsReducer from "../features/recipes/lookupsSlice.ts";
 import favoritesReducer from "../features/recipes/favoritesSlice.ts";
 import userReducer from "../features/user/userSlice.ts";
@@ -14,6 +15,7 @@ export const store = configureStore({
     health: healthReducer,
     auth: authReducer,
     modal: modalReducer,
+    recipes: recipeReducer,
     lookups: lookupsReducer,
     favorites: favoritesReducer,
     user: userReducer,
