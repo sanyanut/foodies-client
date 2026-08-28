@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { ApiError, apiRequest, setAccessToken } from "../../lib/apiClient.ts";
+import {
+  ApiError,
+  apiRequest,
+  getAccessToken,
+  setAccessToken,
+} from "../../lib/apiClient.ts";
 
 export interface User {
   id: string;
@@ -125,8 +130,12 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 // Runs once on app mount: validate the session via /users/me. apiRequest will
 // silently refresh using the httpOnly cookie, so a valid cookie re-authenticates
-// even when no access token survived the reload.
+// even when the access token expired. A true guest has no persisted token/user,
+// so we skip the probe entirely — otherwise every public visit would fire (and
+// the browser would log) a 401 for /users/me + /auth/refresh.
 export const bootstrap = createAsyncThunk("auth/bootstrap", async (_, { dispatch }) => {
+  if (!getAccessToken() && !loadUser()) return;
+
   try {
     await dispatch(fetchMe()).unwrap();
   } catch {
