@@ -24,7 +24,7 @@ export const NetworkLinks = () => (
           target="_blank"
           rel="noreferrer"
           aria-label={link.name}
-          className="flex h-11 w-11 items-center justify-center rounded-full bg-main text-white transition-colors hover:bg-dark"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-gray/60 bg-white text-main transition-colors hover:border-main"
         >
           <Icon name={link.icon} className="h-5 w-5" />
         </a>
