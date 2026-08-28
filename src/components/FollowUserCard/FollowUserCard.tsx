@@ -22,9 +22,9 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
   const isSelf = authUserId === user.id;
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-200 py-6 last:border-b-0">
-      {/* Аватар + інфо + кнопка Follow */}
-      <div className="flex items-center gap-4 sm:gap-6 min-w-0">
+    <div className="flex items-center gap-4 sm:gap-6 border-b border-gray-200 py-6 last:border-b-0">
+      {/* Аватар + інфо + кнопка Follow (Фіксована ширина для вирівнювання рецептів у сітку) */}
+      <div className="flex items-center gap-4 sm:gap-6 w-[200px] sm:w-[260px] md:w-[320px] flex-shrink-0">
         <div className="h-[60px] w-[60px] sm:h-[75px] sm:w-[75px] flex-shrink-0 overflow-hidden rounded-full">
           <img
             src={user.avatar ?? AVATAR_MOT_FOUND_IMG}
@@ -76,10 +76,10 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
         </div>
       )}
 
-      {/* Посилання на профіль */}
+      {/* Посилання на профіль (відштовхується вправо) */}
       <Link
         to={isSelf ? "/profile" : `/user/${user.id}`}
-        className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white flex-shrink-0"
+        className="ml-auto flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white flex-shrink-0"
       >
         <Icon name="arrow-up-right" className="h-4 w-4" />
       </Link>
