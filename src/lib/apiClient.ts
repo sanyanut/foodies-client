@@ -45,8 +45,8 @@ export class ApiError extends Error {
 
 interface RequestOptions {
   method?: string;
-  /** JSON body — serialized automatically. */
-  body?: unknown;
+  /** JSON body or FormData (for file uploads) — handled automatically. */
+  body?: unknown | FormData;
   /** Attach the Bearer access token (and refresh-on-401). */
   auth?: boolean;
   signal?: AbortSignal;
@@ -61,8 +61,14 @@ function buildInit(opts: RequestOptions, token: string | null): RequestInit {
     signal: opts.signal,
   };
   if (opts.body !== undefined) {
-    headers["Content-Type"] = "application/json";
-    init.body = JSON.stringify(opts.body);
+    if (opts.body instanceof FormData) {
+      // FormData: браузер сам виставить Content-Type: multipart/form-data з правильним boundary
+      // НЕ встановлюємо Content-Type вручну і НЕ серіалізуємо!
+      init.body = opts.body;
+    } else {
+      headers["Content-Type"] = "application/json";
+      init.body = JSON.stringify(opts.body);
+    }
   }
   if (opts.auth && token) headers["Authorization"] = `Bearer ${token}`;
   return init;
