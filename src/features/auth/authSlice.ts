@@ -133,6 +133,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 // even when the access token expired. A true guest has no persisted token/user,
 // so we skip the probe entirely — otherwise every public visit would fire (and
 // the browser would log) a 401 for /users/me + /auth/refresh.
+// even when no access token survived the reload.
 export const bootstrap = createAsyncThunk("auth/bootstrap", async (_, { dispatch }) => {
   if (!getAccessToken() && !loadUser()) return;
 
