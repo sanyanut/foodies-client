@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Recipe } from "../../recipeSlice";
+import type { Recipe } from "../../features/recipes/recipeSlice";
 import styles from "./PopularRecipes.module.css";
 
 interface IconProps {
@@ -21,14 +21,13 @@ interface PopularRecipesProps {
 }
 
 export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
-  // Використовуємо реальні дані або мокові для тестування
-  const displayRecipes = recipes && recipes.length > 0 ? recipes : mockPopularRecipes;
+  if (!recipes || recipes.length === 0) return null;
 
   return (
     <div className={styles.popularSection}>
       <h3 className={styles.sectionTitle}>Popular recipes</h3>
       <div className={styles.popularGrid}>
-        {displayRecipes.slice(0, 4).map((recipe) => {
+        {recipes.slice(0, 4).map((recipe) => {
           const recipeId = recipe.id || recipe._id;
 
           const shortDescription = recipe.instructions
@@ -37,7 +36,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
 
           return (
             <div key={recipeId} className={styles.popularCard}>
-              <Link to={`/recipe/${recipeId}`}>
+              <Link to={`/recipes/${recipeId}`}>
                 <img
                   src={recipe.thumb || "https://via.placeholder.com/150"}
                   alt={recipe.title}
@@ -46,7 +45,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
               </Link>
               <div className={styles.popContent}>
                 <div className={styles.popHeader}>
-                  <Link to={`/recipe/${recipeId}`} style={{ textDecoration: "none" }}>
+                  <Link to={`/recipes/${recipeId}`} style={{ textDecoration: "none" }}>
                     <h4 className={styles.popTitle}>{recipe.title}</h4>
                   </Link>
                 </div>
@@ -90,7 +89,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                       />
                     </button>
                     <Link
-                      to={`/recipe/${recipeId}`}
+                      to={`/recipes/${recipeId}`}
                       className={styles.iconButton}
                       aria-label="View recipe"
                     >
@@ -111,41 +110,5 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
     </div>
   );
 };
-
-// Оновлені мокові дані (для тестування) з полями owner та instructions
-const mockPopularRecipes: Partial<Recipe>[] = [
-  {
-    _id: "1",
-    title: "FLAMICHE",
-    thumb: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1",
-    instructions:
-      "For the pastry, sift the flour and salt into the bowl of a food processor, add the butter and process briefly until the mixture resembles fine breadcrumbs. Add one tablespoon of water and process again; add more water...",
-    owner: { name: "Ivetta", avatar: "https://randomuser.me/api/portraits/women/45.jpg" },
-  },
-  {
-    _id: "2",
-    title: "BEEF WELLINGTON",
-    thumb: "https://images.unsplash.com/photo-1544025162-d76694265947",
-    instructions:
-      "Put the mushrooms into a food processor with some seasoning and pulse to a rough paste. Fry the paste over a high heat for 10 mins, stirring often, to remove the moisture. Cool completely. Brush the beef with mustard...",
-    owner: { name: "Victor", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
-  },
-  {
-    _id: "3",
-    title: "TUNA NICOISE",
-    thumb: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
-    instructions:
-      "Heat oven to 200C/fan 180C/gas 6. Toss the potatoes with 2 tsp oil and some seasoning on a baking tray. Roast for 20 mins. Cook the beans in boiling water for 4 mins, drain and refresh...",
-    owner: { name: "Nadia", avatar: "https://randomuser.me/api/portraits/women/60.jpg" },
-  },
-  {
-    _id: "4",
-    title: "GRILLED MAC AND CHEESE",
-    thumb: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af",
-    instructions:
-      "Make the mac and cheese. Bring a medium saucepan of generously salted water to the boil. Add the pasta and cook according to the packet instructions. Drain and set aside. Make a cheese sauce. Melt the butter...",
-    owner: { name: "Andrew", avatar: "https://randomuser.me/api/portraits/men/55.jpg" },
-  },
-];
 
 export default PopularRecipes;

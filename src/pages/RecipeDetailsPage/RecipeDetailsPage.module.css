@@ -2,19 +2,6 @@
   max-width: 1240px;
   margin: 0 auto;
   padding: 40px 20px;
-  font-family: "Poppins", sans-serif;
-  color: #23262a;
-}
-
-.breadcrumbs {
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: rgba(35, 38, 42, 0.5);
-  margin-bottom: 32px;
-  text-transform: uppercase;
-}
-
-.breadcrumbs span:last-child {
   color: #23262a;
 }
 

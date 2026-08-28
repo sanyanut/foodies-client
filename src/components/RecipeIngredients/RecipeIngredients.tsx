@@ -1,7 +1,6 @@
 import React from "react";
-import type { Ingredient } from "../../recipeSlice";
+import type { Ingredient } from "../../features/recipes/recipeSlice";
 import styles from "./RecipeIngredients.module.css";
-
 
 type RecipeIngredientItem = Ingredient & {
   ingredient?: {
@@ -18,7 +17,7 @@ type RecipeIngredientItem = Ingredient & {
 };
 
 interface RecipeIngredientsProps {
-  ingredients?: RecipeIngredientItem[]; 
+  ingredients?: RecipeIngredientItem[];
 }
 
 export const RecipeIngredients: React.FC<RecipeIngredientsProps> = ({ ingredients }) => {
@@ -38,7 +37,9 @@ export const RecipeIngredients: React.FC<RecipeIngredientsProps> = ({ ingredient
 
           return (
             <li key={keyId} className={styles.item}>
-              {image && <img src={image} alt={name || "Ingredient"} className={styles.image} />}
+              {image && (
+                <img src={image} alt={name || "Ingredient"} className={styles.image} />
+              )}
               <div className={styles.info}>
                 <span className={styles.name}>{name}</span>
                 <span className={styles.amount}>{measure}</span>

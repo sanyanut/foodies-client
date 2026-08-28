@@ -1,4 +1,3 @@
-
 .section {
   margin-top: 40px;
   margin-bottom: 40px;
@@ -9,7 +8,6 @@
   font-weight: 700;
   margin-bottom: 20px;
   color: #000;
-  
 }
 
 .list {
@@ -23,15 +21,14 @@
 
 @media screen and (min-width: 768px) {
   .list {
-    
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 .item {
   display: flex;
   align-items: center;
   padding: 12px;
-  background-color: #ffffff; 
+  background-color: #ffffff;
   border-radius: 16px;
   gap: 16px;
 }
@@ -39,8 +36,8 @@
 .image {
   width: 90px;
   height: 90px;
-  object-fit: contain; 
-  border: 1px solid #E0E0E0; 
+  object-fit: contain;
+  border: 1px solid #e0e0e0;
   border-radius: 30px;
   padding: 6px;
   background-color: #ffffff;
@@ -60,5 +57,5 @@
 
 .amount {
   font-size: 14px;
-  color: #BFBEBE; 
+  color: #bfbebe;
 }

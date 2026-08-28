@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// main API URL for the backend server
-const API_URL = "http://localhost:3000";
+// main API URL for the backend server (same source as the shared apiClient, so
+// it works locally and on deploy instead of a hardcoded localhost)
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
 // Interfaces for types
 export interface Ingredient {

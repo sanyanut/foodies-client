@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { openModal } from "../../../ui/modalSlice.ts";
-import type { Recipe } from "../../recipeSlice";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { openModal } from "../../features/ui/modalSlice.ts";
+import type { Recipe } from "../../features/recipes/recipeSlice";
 import styles from "./RecipeMainInfo.module.css";
 
 interface RecipeMainInfoProps {

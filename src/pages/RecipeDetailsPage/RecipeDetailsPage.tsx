@@ -1,51 +1,46 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { fetchRecipeById } from "./recipeSlice";
-import { RecipeIngredients } from "./components/RecipeIngredients/RecipeIngredients";
-import { RecipePreparation } from "./components/RecipePreparation/RecipePreparation";
-import { PopularRecipes } from "./components/PopularRecipes/PopularRecipes";
-import type { Recipe } from "./recipeSlice";
-import axios from "axios";
+import { fetchRecipeById, fetchPopularRecipes } from "../../features/recipes/recipeSlice";
+import { fetchFavorites, toggleFavorite } from "../../features/recipes/favoritesSlice";
+import { openModal } from "../../features/ui/modalSlice";
+import { Breadcrumbs } from "../../components/Breadcrumbs/Breadcrumbs";
+import { RecipeIngredients } from "../../components/RecipeIngredients/RecipeIngredients";
+import { RecipePreparation } from "../../components/RecipePreparation/RecipePreparation";
+import { PopularRecipes } from "../../components/PopularRecipes/PopularRecipes";
 import styles from "./RecipeDetailsPage.module.css";
 
 export const RecipeDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { currentRecipe, status, error } = useAppSelector((state) => state.recipes);
+  const { currentRecipe, popularRecipes, status, error } = useAppSelector(
+    (state) => state.recipes,
+  );
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const favoriteIds = useAppSelector((state) => state.favorites.ids);
 
-  const [popularRecipes, setPopularRecipes] = useState<Recipe[]>([]);
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const recipeId = currentRecipe?.id;
+  const isFavorite = recipeId ? favoriteIds.includes(recipeId) : false;
 
+  // Load the recipe + the popular list whenever the id in the URL changes.
   useEffect(() => {
-    const isValidMongoId = id && id.length === 24;
-    const recipeId = isValidMongoId ? id : "6462a8f74c3d0ddd288980bc";
-
-    dispatch(fetchRecipeById(recipeId));
-
-    axios
-      .get("/recipes/popular?limit=4")
-      .then((res) => {
-        const data = Array.isArray(res.data) ? res.data : res.data.data || [];
-        setPopularRecipes(data);
-      })
-      .catch((err) => console.log("Error loading popular recipes:", err));
+    if (id) dispatch(fetchRecipeById(id));
+    void dispatch(fetchPopularRecipes());
   }, [dispatch, id]);
 
-  const handleToggleFavorite = async () => {
-    try {
-      const recipeId = currentRecipe?.id || currentRecipe?._id;
-      if (isFavorite) {
-        await axios.delete(`/recipes/${recipeId}/favorite`);
-        setIsFavorite(false);
-      } else {
-        await axios.post(`/recipes/${recipeId}/favorite`);
-        setIsFavorite(true);
-      }
-    } catch (err) {
-      console.log("Error updating favorites:", err);
+  // Seed favorites so the heart reflects reality (the endpoint is auth-only).
+  useEffect(() => {
+    if (isAuthenticated) void dispatch(fetchFavorites());
+  }, [dispatch, isAuthenticated]);
+
+  // Guests are prompted to sign in; authed users toggle via the shared slice
+  // (correct API base + Bearer auth), instead of an unauthenticated axios call.
+  const handleToggleFavorite = () => {
+    if (!isAuthenticated) {
+      dispatch(openModal("signin"));
+      return;
     }
+    if (recipeId) void dispatch(toggleFavorite(recipeId));
   };
 
   if (status === "loading") {
@@ -66,13 +61,7 @@ export const RecipeDetailsPage: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      {/* Breadcrumbs navigation */}
-      <div className={styles.breadcrumbs}>
-        <span onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
-          HOME
-        </span>{" "}
-        / <span>{currentRecipe.title}</span>
-      </div>
+      <Breadcrumbs currentPage={currentRecipe.title} />
 
       {/* Main two-column layout */}
       <div className={styles.mainLayout}>
@@ -97,6 +86,10 @@ export const RecipeDetailsPage: React.FC = () => {
             )}
             <span className={styles.timeBadge}>{currentRecipe.time} min</span>
           </div>
+
+          {currentRecipe.description && (
+            <p className={styles.description}>{currentRecipe.description}</p>
+          )}
 
           {currentRecipe.owner && (
             <div className={styles.authorSection}>
