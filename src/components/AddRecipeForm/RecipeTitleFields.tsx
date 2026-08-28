@@ -1,74 +1,50 @@
+import { useFormikContext } from "formik";
+import { FormTextarea } from "./FormTextarea";
+import type { RecipeFormValues } from "./recipeValidationSchema";
+
 /**
- * Блок полів введення назви та опису рецепта.
+ * Блок полів введення назви та короткого опису рецепта.
  *
- * Призначення:
- * - Поле `title`: введення назви рецепта великими літерами (uppercase).
- * - Поле `description`: введення короткого опису страви з обмеженням та динамічним лічильником символів (0/200).
- * - Візуальна валідація: у разі помилки плейсхолдер, лічильник та нижня лінія фарбуються у червоний колір без виведення додаткового тексту помилки.
+ * - Поле `title`: заголовок страви (без нижньої лінії, плейсхолдер темніє при наведенні та зникає при фокусі).
+ * - Поле `description`: короткий опис (до 200 символів) через універсальний `FormTextarea`.
  */
-import { useFormContext } from "react-hook-form";
-import type { RecipeFormData } from "./AddRecipeForm";
-
 export const RecipeTitleFields = () => {
-  const {
-    register,
-    watch,
-    formState: { errors },
-  } = useFormContext<RecipeFormData>();
+  const { values, errors, touched, handleChange, handleBlur } =
+    useFormikContext<RecipeFormValues>();
 
-  // Поточне значення лічильника символів
-  const description = watch("description") || "";
-  const isTitleError = Boolean(errors.title);
-  const isDescriptionError = Boolean(errors.description);
+  const isTitleError = Boolean(touched.title && errors.title);
 
   return (
-    <div className="flex flex-col gap-[32px] md:gap-[40px]">
-      {/* 1. Поле назви рецепта (Title) */}
+    <div className="flex flex-col gap-8 md:gap-10">
+      {/* 1. Назва рецепта */}
       <div className="relative w-full">
         <input
           type="text"
+          name="title"
+          value={values.title}
+          onChange={handleChange}
+          onBlur={handleBlur}
           placeholder="THE NAME OF THE RECIPE"
-          {...register("title", { required: true })}
-          className={`w-full bg-transparent pb-[14px] text-[14px] font-bold uppercase tracking-[-0.28px] outline-none transition-colors md:text-[16px] md:tracking-[-0.32px] ${
+          maxLength={100}
+          className={`w-full bg-transparent pb-1 text-[18px] font-extrabold uppercase leading-6 tracking-[-0.36px] outline-none transition-colors duration-200 placeholder:transition-colors focus:placeholder:text-transparent md:text-[24px] md:leading-7 md:tracking-[-0.48px] ${
             isTitleError
-              ? "text-red-500 placeholder:text-red-500"
-              : "text-main placeholder:text-gray focus:placeholder-transparent"
+              ? "text-[#AE0000] caret-[#AE0000] placeholder:text-[#AE0000]"
+              : "text-main caret-main placeholder:text-gray hover:placeholder:text-main"
           }`}
         />
-      </div>
-
-      {/* 2. Поле опису страви (Description з лічильником 0/200) */}
-      <div className="relative w-full">
-        <div className="flex items-center justify-between gap-2 pb-[14px]">
-          <input
-            type="text"
-            maxLength={200}
-            placeholder="Enter a description of the dish"
-            {...register("description", { required: true, maxLength: 200 })}
-            className={`w-full bg-transparent text-[14px] leading-[20px] tracking-[-0.28px] outline-none transition-colors md:text-[16px] md:leading-[24px] md:tracking-[-0.32px] ${
-              isDescriptionError
-                ? "text-red-500 placeholder:text-red-500"
-                : "text-main placeholder:text-gray"
-            }`}
-          />
-
-          {/* Лічильник символів */}
-          <span
-            className={`shrink-0 text-[12px] leading-[18px] tracking-[-0.24px] md:text-[14px] md:leading-[20px] ${
-              isDescriptionError ? "text-red-500" : "text-gray"
-            }`}
-          >
-            {description.length}/200
+        {isTitleError && (
+          <span className="mt-1 block text-xs font-medium text-[#AE0000]">
+            {errors.title}
           </span>
-        </div>
-
-        {/* Нижня лінія */}
-        <div
-          className={`h-[1px] w-full transition-colors ${
-            isDescriptionError ? "bg-red-500" : "bg-gray/60"
-          }`}
-        />
+        )}
       </div>
+
+      {/* 2. Опис страви */}
+      <FormTextarea
+        name="description"
+        placeholder="Enter a description of the dish"
+        maxLength={200}
+      />
     </div>
   );
 };

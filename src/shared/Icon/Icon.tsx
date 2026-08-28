@@ -14,7 +14,11 @@ interface IconProps {
     | "arrow-up-right"
     | "facebook"
     | "instagram"
-    | "youtube";
+    | "youtube"
+    | "camera"
+    | "minus"
+    | "plus"
+    | "trash";
   className?: string;
 }
 

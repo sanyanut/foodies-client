@@ -61,8 +61,12 @@ function buildInit(opts: RequestOptions, token: string | null): RequestInit {
     signal: opts.signal,
   };
   if (opts.body !== undefined) {
-    headers["Content-Type"] = "application/json";
-    init.body = JSON.stringify(opts.body);
+    if (opts.body instanceof FormData) {
+      init.body = opts.body;
+    } else {
+      headers["Content-Type"] = "application/json";
+      init.body = JSON.stringify(opts.body);
+    }
   }
   if (opts.auth && token) headers["Authorization"] = `Bearer ${token}`;
   return init;
