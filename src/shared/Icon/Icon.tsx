@@ -19,7 +19,8 @@ interface IconProps {
     | "camera"
     | "minus"
     | "plus"
-    | "trash";
+    | "trash"
+    | "loader";
   className?: string;
 }
 

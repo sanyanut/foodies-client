@@ -11,6 +11,7 @@ import { RecipeFilters } from "../RecipeFilters/RecipeFilters.tsx";
 import { RecipeList } from "../RecipeList/RecipeList.tsx";
 import { RecipePagination } from "../RecipePagination/RecipePagination.tsx";
 import { containerClass } from "../Container/Container.tsx";
+import { Icon } from "../../shared/Icon/Icon.tsx";
 
 const PAGE_SIZE = 12;
 
@@ -179,9 +180,13 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
 
         <div aria-busy={isLoading}>
           {isLoading && !catalog && (
-            <p role="status" className="text-[14px] text-gray">
-              Loading recipes…
-            </p>
+            <div
+              role="status"
+              className="flex min-h-[360px] items-center justify-center text-gray"
+            >
+              <Icon name="loader" className="h-12 w-12 animate-spin md:h-14 md:w-14" />
+              <span className="sr-only">Loading recipes…</span>
+            </div>
           )}
 
           {error && (

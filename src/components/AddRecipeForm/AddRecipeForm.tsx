@@ -24,7 +24,13 @@ export const AddRecipeForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { categories, areas } = useAppSelector((state) => state.lookups);
+  const {
+    categories,
+    areas,
+    status: lookupsStatus,
+    error: lookupsError,
+  } = useAppSelector((state) => state.lookups);
+  const lookupsLoading = lookupsStatus === "loading";
 
   useEffect(() => {
     dispatch(fetchLookups());
@@ -114,6 +120,7 @@ export const AddRecipeForm: React.FC = () => {
                       placeholder="Select a category"
                       options={categories}
                       value={values.category}
+                      loading={lookupsLoading}
                       onChange={(option) => {
                         setFieldValue("category", option.id);
                         setFieldTouched("category", true, false);
@@ -134,6 +141,7 @@ export const AddRecipeForm: React.FC = () => {
                     placeholder="Area"
                     options={areas}
                     value={values.area}
+                    loading={lookupsLoading}
                     onChange={(option) => {
                       setFieldValue("area", option.id);
                       setFieldTouched("area", true, false);
@@ -141,6 +149,12 @@ export const AddRecipeForm: React.FC = () => {
                     error={touched.area && errors.area}
                   />
                 </div>
+
+                {lookupsError && (
+                  <p role="alert" className="text-[14px] text-[#AE0000]">
+                    {lookupsError}
+                  </p>
+                )}
 
                 {/* Ingredients */}
                 <RecipeIngredients />
@@ -173,8 +187,11 @@ export const AddRecipeForm: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex h-12 w-31 items-center justify-center rounded-modal border border-main bg-main text-[14px] font-bold uppercase tracking-[-0.28px] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:h-14 md:w-36.5 md:text-[16px] md:tracking-[-0.32px]"
+                  className="flex h-12 min-w-31 items-center justify-center gap-1.5 rounded-modal border border-main bg-main px-4 text-[14px] font-bold uppercase tracking-[-0.28px] text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 md:h-14 md:min-w-36.5 md:text-[16px] md:tracking-[-0.32px]"
                 >
+                  {isSubmitting && (
+                    <Icon name="loader" className="h-4.5 w-4.5 animate-spin" />
+                  )}
                   {isSubmitting ? "Publishing..." : "Publish"}
                 </button>
               </div>

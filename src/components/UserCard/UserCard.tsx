@@ -4,6 +4,7 @@ import { LongButton } from "../../fragments/LongButton/LongButton";
 import { openModal } from "../../features/ui/modalSlice.ts";
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { AVATAR_MOT_FOUND_IMG } from "../../shared/constants.ts";
+import { Icon } from "../../shared/Icon/Icon.tsx";
 import {
   clearViewedProfile,
   fetchMyProfile,
@@ -34,7 +35,15 @@ export function UserCard() {
   }, [dispatch, id, authUserId]);
 
   if (status === "loading" || !viewedProfile) {
-    return <div className="py-8 text-center text-gray-400">Loading profile...</div>;
+    return (
+      <div
+        role="status"
+        className="flex min-h-[320px] w-full max-w-[349px] items-center justify-center rounded-[32px] border border-gray-200 bg-white text-gray-400"
+      >
+        <Icon name="loader" className="h-12 w-12 animate-spin" />
+        <span className="sr-only">Loading profile...</span>
+      </div>
+    );
   }
 
   const isFollowed = "isFollowedByMe" in viewedProfile && viewedProfile.isFollowedByMe;
