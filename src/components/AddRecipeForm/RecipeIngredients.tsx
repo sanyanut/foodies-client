@@ -30,6 +30,9 @@ export const RecipeIngredients: React.FC = () => {
     useFormikContext<RecipeFormValues>();
 
   const ingredientsOptions = useAppSelector((state) => state.lookups.ingredients);
+  const ingredientsLoading = useAppSelector(
+    (state) => state.lookups.status === "loading",
+  );
 
   const isMeasureError = Boolean(touched.currentMeasure && errors.currentMeasure);
   const isIngredientError = Boolean(
@@ -109,6 +112,7 @@ export const RecipeIngredients: React.FC = () => {
             placeholder="Add the ingredient"
             options={ingredientsOptions}
             value={values.currentIngredientId}
+            loading={ingredientsLoading}
             onChange={(option) => {
               setFieldValue("currentIngredientId", option.id, false);
               setFieldError("currentIngredientId", undefined);

@@ -4,12 +4,14 @@ import styles from "./RecipePreparation.module.css";
 interface RecipePreparationProps {
   instructions: string;
   isFavorite: boolean;
+  isTogglingFavorite?: boolean;
   onToggleFavorite: () => void;
 }
 
 export const RecipePreparation: React.FC<RecipePreparationProps> = ({
   instructions,
   isFavorite,
+  isTogglingFavorite = false,
   onToggleFavorite,
 }) => {
   if (!instructions) return null;
@@ -19,7 +21,12 @@ export const RecipePreparation: React.FC<RecipePreparationProps> = ({
       <h3 className={styles.sectionTitle}>Recipe Preparation</h3>
       <p className={styles.preparationText}>{instructions}</p>
 
-      <button className={styles.favoriteButton} onClick={onToggleFavorite} type="button">
+      <button
+        className={styles.favoriteButton}
+        onClick={onToggleFavorite}
+        disabled={isTogglingFavorite}
+        type="button"
+      >
         {isFavorite ? "Remove from favorites" : "Add to favorites"}
       </button>
     </div>
