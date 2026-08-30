@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchRecipeById, fetchPopularRecipes } from "../../features/recipes/recipeSlice";
 import { fetchFavorites, toggleFavorite } from "../../features/recipes/favoritesSlice";
@@ -8,6 +9,7 @@ import { Breadcrumbs } from "../../components/Breadcrumbs/Breadcrumbs";
 import { RecipeIngredients } from "../../components/RecipeIngredients/RecipeIngredients";
 import { RecipePreparation } from "../../components/RecipePreparation/RecipePreparation";
 import { PopularRecipes } from "../../components/PopularRecipes/PopularRecipes";
+import { Icon } from "../../shared/Icon/Icon";
 import styles from "./RecipeDetailsPage.module.css";
 
 export const RecipeDetailsPage: React.FC = () => {
@@ -18,9 +20,11 @@ export const RecipeDetailsPage: React.FC = () => {
   );
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const favoriteIds = useAppSelector((state) => state.favorites.ids);
+  const togglingId = useAppSelector((state) => state.favorites.togglingId);
 
   const recipeId = currentRecipe?.id;
   const isFavorite = recipeId ? favoriteIds.includes(recipeId) : false;
+  const isTogglingFavorite = recipeId ? togglingId === recipeId : false;
 
   // Load the recipe + the popular list whenever the id in the URL changes.
   useEffect(() => {
@@ -35,16 +39,34 @@ export const RecipeDetailsPage: React.FC = () => {
 
   // Guests are prompted to sign in; authed users toggle via the shared slice
   // (correct API base + Bearer auth), instead of an unauthenticated axios call.
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = async () => {
     if (!isAuthenticated) {
       dispatch(openModal("signin"));
       return;
     }
-    if (recipeId) void dispatch(toggleFavorite(recipeId));
+    if (!recipeId) return;
+    const result = await dispatch(toggleFavorite(recipeId));
+    if (toggleFavorite.rejected.match(result)) {
+      toast.error((result.payload as string) ?? "Failed to update favorites");
+    }
   };
 
   if (status === "loading") {
-    return <div className={styles.loading}>Loading recipe...</div>;
+    return (
+      <div
+        role="status"
+        className={styles.loading}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <Icon name="loader" className="h-14 w-14 animate-spin" />
+        <span className="sr-only">Loading recipe...</span>
+      </div>
+    );
   }
 
   if (status === "failed") {
@@ -121,6 +143,7 @@ export const RecipeDetailsPage: React.FC = () => {
           <RecipePreparation
             instructions={currentRecipe.instructions}
             isFavorite={isFavorite}
+            isTogglingFavorite={isTogglingFavorite}
             onToggleFavorite={handleToggleFavorite}
           />
         </div>

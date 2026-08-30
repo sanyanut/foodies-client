@@ -4,6 +4,7 @@ import { closeModal } from "../../../features/ui/modalSlice.ts";
 import { updateAvatar } from "../../../features/user/userSlice.ts";
 import { updateUserAvatar } from "../../../features/auth/authSlice.ts";
 import { Modal } from "../Modal/Modal.tsx";
+import { Icon } from "../../../shared/Icon/Icon.tsx";
 import type { RootState } from "../../../store/store.ts";
 // import { AVATAR_MOT_FOUND_IMG } from "../../../shared/constants.ts";
 
@@ -93,8 +94,9 @@ export const UpdateAvatarModal = () => {
             type="button"
             onClick={handleSubmit}
             disabled={!selectedFile || isPending}
-            className="w-full rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:opacity-50"
           >
+            {isPending && <Icon name="loader" className="h-5 w-5 animate-spin" />}
             {isPending ? "Uploading..." : "Save"}
           </button>
           <button

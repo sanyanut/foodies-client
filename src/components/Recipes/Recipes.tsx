@@ -179,9 +179,13 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
 
         <div aria-busy={isLoading}>
           {isLoading && !catalog && (
-            <p role="status" className="text-[14px] text-gray">
-              Loading recipes…
-            </p>
+            <div
+              role="status"
+              className="flex min-h-[360px] items-center justify-center text-gray"
+            >
+              <Icon name="loader" className="h-12 w-12 animate-spin md:h-14 md:w-14" />
+              <span className="sr-only">Loading recipes…</span>
+            </div>
           )}
 
           {error && (

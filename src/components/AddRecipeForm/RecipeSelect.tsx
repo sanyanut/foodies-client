@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import type { RecipeLookup } from "../../features/recipes/types";
+import { Spinner } from "../../shared/Spinner/Spinner.tsx";
 
 interface RecipeSelectProps {
   label?: string;
@@ -9,6 +10,10 @@ interface RecipeSelectProps {
   onChange: (option: RecipeLookup) => void;
   error?: string | boolean;
   className?: string;
+  /** True while the options list is still being fetched (e.g. lookupsSlice
+   *  status === "loading") — shown instead of "No options available" so an
+   *  empty list mid-fetch doesn't read as a genuinely empty dictionary. */
+  loading?: boolean;
 }
 
 export const RecipeSelect: React.FC<RecipeSelectProps> = ({
@@ -19,6 +24,7 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
   onChange,
   error,
   className = "",
+  loading = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   // Клієнтський пошук по опціях (як у RecipeFilters на сторінці рецептів).
@@ -81,8 +87,9 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
       {/* Кнопка вибору (додано клас group) */}
       <button
         type="button"
+        disabled={loading}
         onClick={() => (isOpen ? close() : setIsOpen(true))}
-        className={`group flex h-12 w-full items-center justify-between rounded-dropdown border bg-transparent px-3.5 text-[14px] leading-5 tracking-[-0.28px] transition-colors md:h-14 md:px-4.5 md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
+        className={`group flex h-12 w-full items-center justify-between rounded-dropdown border bg-transparent px-3.5 text-[14px] leading-5 tracking-[-0.28px] transition-colors disabled:cursor-not-allowed disabled:opacity-50 md:h-14 md:px-4.5 md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
           error ? "border-[#AE0000]" : "border-gray hover:border-main"
         }`}
       >
@@ -95,20 +102,23 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
           {selectedOption ? selectedOption.name : placeholder}
         </span>
 
-        {/* Шеврон */}
-        <svg
-          className={`h-4.5 w-4.5 shrink-0 text-main transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 9l6 6 6-6" />
-        </svg>
+        {loading ? (
+          <Spinner className="h-4.5 w-4.5 shrink-0 text-main" />
+        ) : (
+          <svg
+            className={`h-4.5 w-4.5 shrink-0 text-main transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        )}
       </button>
 
       {/* Спливне вікно (Dropdown menu) з полем пошуку */}
@@ -125,7 +135,11 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
           />
 
           <ul className="max-h-55 w-full overflow-y-auto">
-            {options.length === 0 ? (
+            {loading ? (
+              <li className="flex justify-center py-2">
+                <Spinner className="h-4 w-4 text-gray" />
+              </li>
+            ) : options.length === 0 ? (
               <li className="py-2 text-center text-sm text-gray">No options available</li>
             ) : filteredOptions.length === 0 ? (
               <li className="py-2 text-center text-sm text-gray">No matches found</li>
