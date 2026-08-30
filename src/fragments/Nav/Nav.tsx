@@ -37,7 +37,7 @@ export const Nav = ({ authed, variant = "horizontal", onNavigate }: NavProps) =>
       <ul
         className={
           variant === "vertical"
-            ? "flex flex-col gap-6"
+            ? "flex flex-col gap-6 items-center"
             : "flex items-center gap-1 lg:gap-3"
         }
       >
