@@ -91,7 +91,7 @@ const CategoryCard = ({
         type="button"
         onClick={() => onSelect(name)}
         aria-label={`View ${name} recipes`}
-        className="flex items-center justify-center rounded-full border border-white/20 p-[11px] text-white transition-transform hover:scale-110 active:scale-90 md:p-[12px]"
+        className="flex items-center justify-center rounded-full border border-white/20 p-[11px] text-white transition-transform hover:scale-110 active:scale-90 md:p-[12px] cursor-pointer"
       >
         <Icon name="arrow-up-right" className="h-[18px] w-[18px]" />
       </button>
@@ -108,7 +108,7 @@ export const CategoryList = ({ onSelectCategory, onSelectAll }: CategoryListProp
     <button
       type="button"
       onClick={onSelectAll}
-      className={`flex h-[250px] shrink-0 items-center justify-center rounded-[20px] bg-main text-[16px] font-extrabold uppercase text-white tracking-[-0.32px] transition-colors hover:bg-dark md:h-[369px] md:rounded-[30px] md:text-[20px] md:tracking-[-0.4px] ${cardWidth()}`}
+      className={`flex h-[250px] shrink-0 items-center justify-center rounded-[20px] bg-main text-[16px] cursor-pointer font-extrabold uppercase text-white tracking-[-0.32px] transition-colors hover:bg-dark md:h-[369px] md:rounded-[30px] md:text-[20px] md:tracking-[-0.4px] ${cardWidth()}`}
     >
       All categories
     </button>

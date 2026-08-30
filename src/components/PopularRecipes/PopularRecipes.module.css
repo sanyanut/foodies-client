@@ -13,17 +13,22 @@
 .popularGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  row-gap: 40px;
+}
+
+@media screen and (min-width: 768px) {
+  .popularGrid {
+    column-gap: 20px;
+  }
 }
 
 .popularCard {
   background: #ffffff;
-  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);*/
   transition: transform 0.2s ease;
 }
 
@@ -33,12 +38,13 @@
 
 .popImage {
   width: 100%;
-  height: 200px;
+  height: 275px;
+  margin-bottom: 16px;
   object-fit: cover;
+  border-radius: 30px;
 }
 
 .popContent {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -60,14 +66,21 @@
 
 .popDescription {
   font-size: 14px;
-  color: #7e7e7e;
-  line-height: 1.4;
-  margin-bottom: 20px;
+  color: #1a1a1a;
+  line-height: 20px;
+  margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex-grow: 1;
+}
+
+@media screen and (min-width: 768px) {
+  .popDescription {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
 
 .popFooter {
@@ -164,13 +177,13 @@
 }
 
 /* Адаптивність */
-@media (max-width: 1024px) {
+@media (max-width: 1440px) {
   .popularGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   .popularGrid {
     grid-template-columns: 1fr;
   }
