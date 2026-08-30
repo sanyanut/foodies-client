@@ -13,8 +13,8 @@ export interface IFollowUser {
 }
 
 interface FollowUserCardProps {
-  user: IFollowUser;
-  onToggleFollow: (userId: string, isFollowed: boolean) => void;
+  readonly user: IFollowUser;
+  readonly onToggleFollow: (userId: string, isFollowed: boolean) => void;
 }
 
 export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
@@ -22,10 +22,10 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
   const isSelf = authUserId === user.id;
 
   return (
-    <div className="flex items-center justify-between gap-4 border-b border-gray-200 py-6 last:border-b-0">
-      {/* Аватар + інфо + кнопка */}
-      <div className="flex items-center gap-4 sm:gap-6">
-        <div className="h-16 w-16 sm:h-[75px] sm:w-[75px] flex-shrink-0 overflow-hidden rounded-full">
+    <div className="flex items-center gap-4 sm:gap-6 border-b border-gray-200 py-6 last:border-b-0">
+      {/* Аватар + інфо + кнопка Follow (Фіксована ширина для вирівнювання рецептів у сітку) */}
+      <div className="flex items-center gap-4 sm:gap-6 w-[200px] sm:w-[260px] md:w-[280px] flex-shrink-0">
+        <div className="h-[60px] w-[60px] sm:h-[75px] sm:w-[75px] flex-shrink-0 overflow-hidden rounded-full">
           <img
             src={user.avatar ?? AVATAR_MOT_FOUND_IMG}
             alt={user.name}
@@ -33,8 +33,8 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
           />
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <h3 className="text-[16px] sm:text-[18px] font-bold uppercase text-main">
+        <div className="flex flex-col gap-1.5 min-w-0">
+          <h3 className="text-[16px] sm:text-[18px] font-bold uppercase text-main truncate">
             {user.name}
           </h3>
 
@@ -56,28 +56,32 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
         </div>
       </div>
 
-      {/* Прев'ю рецептів (тільки desktop/tablet) */}
-      {(user.recipes?.length ?? 0) > 0 && (
-        <div className="hidden md:flex items-center gap-3 overflow-hidden">
-          {user.recipes!.slice(0, 4).map((recipe) => (
-            <div
+      {/* Прев'ю рецептів: приховані на телефоні, 3 на планшеті, 4 на десктопі. */}
+      {user.recipes && user.recipes.length > 0 && (
+        <div className="hidden md:flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {user.recipes.slice(0, 4).map((recipe, index) => (
+            <Link
               key={recipe.id}
-              className="h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-[14px]"
+              to={`/recipe/${recipe.id}`}
+              title={recipe.title}
+              className={`h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] flex-shrink-0 overflow-hidden rounded-[14px] transition-opacity hover:opacity-80 ${
+                index === 3 ? "hidden min-[1440px]:block" : ""
+              }`}
             >
               <img
                 src={recipe.thumb}
                 alt={recipe.title}
                 className="h-full w-full object-cover"
               />
-            </div>
+            </Link>
           ))}
         </div>
       )}
 
-      {/* Посилання на профіль */}
+      {/* Посилання на профіль (відштовхується вправо) */}
       <Link
         to={isSelf ? "/profile" : `/user/${user.id}`}
-        className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white flex-shrink-0"
+        className="ml-auto flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full border border-gray-300 text-main transition-colors hover:border-main hover:bg-main hover:text-white flex-shrink-0"
       >
         <Icon name="arrow-up-right" className="h-4 w-4" />
       </Link>

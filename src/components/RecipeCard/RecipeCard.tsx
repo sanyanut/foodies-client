@@ -59,21 +59,21 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
         to={`/recipe/${recipe.id}`}
         className="mt-[16px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
       >
-        <h3 className="truncate text-[16px] font-extrabold uppercase leading-[24px] tracking-[-0.32px]">
+        <h3 className="truncate text-[18px] md:text-[20px] font-extrabold uppercase leading-[24px] tracking-[-0.32px]">
           {recipe.title}
         </h3>
       </Link>
 
-      <p className="mt-[8px] line-clamp-2 min-h-[40px] text-[14px] font-medium leading-[20px] tracking-[-0.28px] text-dark">
+      <p className="mt-[8px] line-clamp-2 min-h-[40px] text-[14px] md:text-[16px] font-medium leading-[20px] md:leading-[24px] tracking-[-0.28px] text-dark">
         {recipe.description ?? ""}
       </p>
 
-      <div className="mt-[16px] flex items-center justify-between gap-[12px]">
+      <div className="mt-[8px] flex items-center justify-between gap-[12px]">
         <button
           type="button"
           onClick={handleAuthorClick}
           aria-label={`View ${recipe.owner.name}'s profile`}
-          className="group flex min-w-0 items-center gap-[8px] rounded-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
+          className="group flex min-w-0 items-center gap-[8px] rounded-full text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main cursor-pointer"
         >
           {recipe.owner.avatar ? (
             <img

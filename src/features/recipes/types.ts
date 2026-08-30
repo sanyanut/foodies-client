@@ -1,6 +1,8 @@
 export interface RecipeLookup {
   id: string;
   name: string;
+  /** Ingredients from GET /ingredients also carry a thumbnail; categories/areas don't. */
+  img?: string;
 }
 
 export interface RecipeOwner {

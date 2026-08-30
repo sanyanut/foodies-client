@@ -1,5 +1,4 @@
 .section {
-  margin-top: 40px;
   margin-bottom: 40px;
 }
 
@@ -8,12 +7,13 @@
   font-weight: 700;
   margin-bottom: 20px;
   color: #000;
+  text-transform: uppercase;
 }
 
 .list {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -24,40 +24,80 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+@media screen and (min-width: 1440px) {
+  .list {
+    grid-template-columns: repeat(3, 33.3%);
+  }
+}
+@media screen and (max-width: 420px) {
+  .list {
+    gap: 16px;
+  }
+}
 .item {
   display: flex;
   align-items: center;
-  padding: 12px;
   background-color: #ffffff;
   border-radius: 16px;
-  gap: 16px;
+  gap: 14px;
 }
 
+@media screen and (max-width: 500px) {
+  .item {
+    padding: 0;
+  }
+}
+@media screen and (max-width: 375px) {
+  .item {
+    gap: 8px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .item {
+    gap: 10px;
+  }
+}
+
+/* Smaller thumbnails on mobile so two cards fit per row with room for the text;
+   full 90px from the tablet breakpoint up. */
 .image {
-  width: 90px;
-  height: 90px;
+  width: 75px;
+  height: 75px;
   object-fit: contain;
   border: 1px solid #e0e0e0;
-  border-radius: 30px;
+  border-radius: 18px;
   padding: 6px;
   background-color: #ffffff;
   flex-shrink: 0;
 }
 
 .imagePlaceholder {
-  width: 90px;
-  height: 90px;
+  width: 75px;
+  height: 75px;
   flex-shrink: 0;
   border: 1px solid #e0e0e0;
-  border-radius: 30px;
+  border-radius: 18px;
   background-color: #f4f4f4;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #bfbebe;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 22px;
   text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .image,
+  .imagePlaceholder {
+    width: 90px;
+    height: 90px;
+    border-radius: 15px;
+  }
+
+  .imagePlaceholder {
+    font-size: 28px;
+  }
 }
 
 .info {
@@ -67,12 +107,29 @@
 }
 
 .name {
-  font-weight: 600;
-  font-size: 16px;
-  color: #333;
+  font-weight: 500;
+  line-height: 20px;
+  font-size: 14px;
+  color: #050505;
+}
+
+@media screen and (min-width: 768px) {
+  .name {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
 
 .amount {
   font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
   color: #bfbebe;
+}
+
+@media screen and (min-width: 768px) {
+  .amount {
+    font-size: 16px;
+    line-height: 24px;
+  }
 }

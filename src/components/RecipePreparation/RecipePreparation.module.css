@@ -12,11 +12,12 @@
 }
 
 .preparationText {
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 20px;
   color: rgba(5, 5, 5, 0.8);
   white-space: pre-line;
   margin-bottom: 32px;
+  font-weight: 500;
 }
 
 .favoriteButton {
@@ -29,6 +30,7 @@
   color: #050505;
   font-size: 14px;
   font-weight: 600;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,5 +51,6 @@
 @media (min-width: 768px) {
   .preparationText {
     font-size: 16px;
+    line-height: 24px;
   }
 }

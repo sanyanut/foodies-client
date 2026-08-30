@@ -3,6 +3,7 @@ import { Breadcrumbs } from "../../components/Breadcrumbs/Breadcrumbs.tsx";
 import { UserCard } from "../../components/UserCard/UserCard.tsx";
 import { UserPageContainer } from "../../components/UserPageContainer/UserPageContainer.tsx";
 import { UserTabs } from "../../components/UserTabs/UserTabs.tsx";
+import { Container } from "../../components/Container/Container.tsx";
 
 export const UserPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,7 +16,7 @@ export const UserPage = () => {
     : "Reveal your culinary art, share your favorite recipe and create gastronomic masterpieces with us.";
 
   return (
-    <section className="mx-auto max-w-[1440px] px-4 py-16 md:px-8 lg:px-20">
+    <Container as="section" className="py-16">
       {/* Breadcrumb завжди "Profile" згідно Figma */}
       <Breadcrumbs currentPage="Profile" />
       <h1 className="text-[28px] font-extrabold uppercase tracking-[-0.02em] md:text-[40px]">
@@ -24,6 +25,6 @@ export const UserPage = () => {
       <p className="mt-5 max-w-[450px]">{description}</p>
 
       <UserPageContainer sidebar={<UserCard />} content={<UserTabs />} />
-    </section>
+    </Container>
   );
 };

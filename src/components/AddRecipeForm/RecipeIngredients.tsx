@@ -1,9 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormikContext } from "formik";
 import { useAppSelector } from "../../store/hooks";
 import { RecipeSelect } from "./RecipeSelect";
 import { Icon } from "../../shared/Icon/Icon";
 import type { RecipeFormValues, AddedIngredient } from "./recipeValidationSchema";
+
+/** Added-ingredient thumbnail with a fallback: shows the 🥗 emoji when there is
+ *  no image URL or when the image fails to load (broken/expired link) — instead
+ *  of the browser's broken-image icon. */
+const IngredientThumb: React.FC<{ src?: string; name: string }> = ({ src, name }) => {
+  const [failed, setFailed] = useState(false);
+
+  if (!src || failed) {
+    return <span className="text-[22px] md:text-[26px]">🥗</span>;
+  }
+
+  return (
+    <img
+      src={src}
+      alt={name}
+      className="h-full w-full object-cover"
+      onError={() => setFailed(true)}
+    />
+  );
+};
 
 export const RecipeIngredients: React.FC = () => {
   const { values, setFieldValue, setFieldError, setFieldTouched, errors, touched } =
@@ -58,6 +78,7 @@ export const RecipeIngredients: React.FC = () => {
       id: selectedOption.id,
       name: selectedOption.name,
       measure: values.currentMeasure.trim(),
+      img: selectedOption.img,
     };
 
     setFieldValue("ingredients", [...values.ingredients, newItem], false);
@@ -165,15 +186,7 @@ export const RecipeIngredients: React.FC = () => {
             >
               <div className="flex h-18.75 w-18.75 shrink-0 items-center justify-center p-2.5 md:h-22.5 md:w-22.5 md:p-3.75">
                 <div className="flex h-13.75 w-13.75 items-center justify-center overflow-hidden rounded-dropdown bg-[#F7F7F7] md:h-15 md:w-15">
-                  {item.img ? (
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-[22px] md:text-[26px]">🥗</span>
-                  )}
+                  <IngredientThumb src={item.img} name={item.name} />
                 </div>
               </div>
 
