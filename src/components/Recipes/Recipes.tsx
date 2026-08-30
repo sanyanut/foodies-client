@@ -10,6 +10,7 @@ import { MainTitle } from "../MainTitle/MainTitle.tsx";
 import { RecipeFilters } from "../RecipeFilters/RecipeFilters.tsx";
 import { RecipeList } from "../RecipeList/RecipeList.tsx";
 import { RecipePagination } from "../RecipePagination/RecipePagination.tsx";
+import { containerClass } from "../Container/Container.tsx";
 
 const PAGE_SIZE = 12;
 
@@ -139,7 +140,7 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
     <section
       ref={sectionRef}
       aria-label="Recipes"
-      className="mx-auto w-full max-w-[1440px] px-[16px] pb-16 pt-[32px] md:px-[32px] md:pb-20 lg:px-[80px]"
+      className={`${containerClass} pb-16 pt-[32px] md:pb-20`}
     >
       <button
         type="button"
@@ -157,7 +158,7 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
         className="mt-[16px]"
       />
 
-      <div className="grid min-h-screen items-start gap-[40px] lg:grid-cols-[330px_minmax(0,1fr)]">
+      <div className="grid min-h-screen items-start gap-[40px] min-[1440px]:grid-cols-[330px_minmax(0,1fr)]">
         <div>
           <RecipeFilters
             ingredients={ingredients}

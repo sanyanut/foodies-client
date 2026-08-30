@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
+import { Container } from "../../components/Container/Container.tsx";
+
 export const NotFoundPage = () => (
-  <section className="mx-auto flex max-w-[1440px] flex-col items-center px-4 py-24 text-center">
+  <Container as="section" className="flex flex-col items-center py-24 text-center">
     <h1 className="text-[64px] font-extrabold leading-none">404</h1>
     <p className="mt-2 text-gray">Page not found</p>
     <Link
@@ -10,5 +12,5 @@ export const NotFoundPage = () => (
     >
       Go home
     </Link>
-  </section>
+  </Container>
 );

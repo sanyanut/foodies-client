@@ -18,7 +18,7 @@ export const Hero = () => {
       aria-label="Hero"
       className="-mt-px px-2 pb-2 md:px-4 md:pb-4 lg:px-5 lg:pb-5"
     >
-      <div className="relative mx-auto max-w-[1400px] overflow-hidden rounded-b-[20px] bg-main px-4 pb-16 pt-12 text-center text-white md:rounded-b-[30px] md:px-8 md:pb-24 md:pt-16 lg:px-[60px] lg:pb-28 lg:pt-20">
+      <div className="relative mx-auto max-w-[375px] overflow-hidden rounded-b-[20px] bg-main px-4 pb-16 pt-12 text-center text-white md:max-w-[768px] md:rounded-b-[30px] md:px-8 md:pb-24 md:pt-16 min-[1440px]:max-w-[1440px]! min-[1440px]:px-[60px]! min-[1440px]:pb-28! min-[1440px]:pt-20!">
         <h1 className="relative mx-auto max-w-[330px] text-[40px] font-extrabold uppercase leading-[1] tracking-[-0.02em] md:max-w-[680px] md:text-[70px] min-[1440px]:max-w-[880px]! min-[1440px]:text-[90px]!">
           Improve Your Culinary Talents
         </h1>

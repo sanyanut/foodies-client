@@ -35,7 +35,7 @@ export function RecipePreview({ recipe, isOwner, onDelete }: IRecipePreviewProps
         <h3 className="truncate text-[16px] font-bold uppercase text-main mb-2">
           {recipe.title}
         </h3>
-        <p className="line-clamp-2 text-[14px] font-medium text-main/60">
+        <p className="line-clamp-2 text-[14px] font-medium text-dark">
           {recipe.description}
         </p>
       </div>

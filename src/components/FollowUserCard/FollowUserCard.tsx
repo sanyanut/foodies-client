@@ -24,7 +24,7 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
   return (
     <div className="flex items-center gap-4 sm:gap-6 border-b border-gray-200 py-6 last:border-b-0">
       {/* Аватар + інфо + кнопка Follow (Фіксована ширина для вирівнювання рецептів у сітку) */}
-      <div className="flex items-center gap-4 sm:gap-6 w-[200px] sm:w-[260px] md:w-[320px] flex-shrink-0">
+      <div className="flex items-center gap-4 sm:gap-6 w-[200px] sm:w-[260px] md:w-[280px] flex-shrink-0">
         <div className="h-[60px] w-[60px] sm:h-[75px] sm:w-[75px] flex-shrink-0 overflow-hidden rounded-full">
           <img
             src={user.avatar ?? AVATAR_MOT_FOUND_IMG}
@@ -56,15 +56,17 @@ export function FollowUserCard({ user, onToggleFollow }: FollowUserCardProps) {
         </div>
       </div>
 
-      {/* Прев'ю перших 4 рецептів (кліковані) */}
+      {/* Прев'ю рецептів: приховані на телефоні, 3 на планшеті, 4 на десктопі. */}
       {user.recipes && user.recipes.length > 0 && (
-        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-          {user.recipes.slice(0, 4).map((recipe) => (
+        <div className="hidden md:flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {user.recipes.slice(0, 4).map((recipe, index) => (
             <Link
               key={recipe.id}
               to={`/recipe/${recipe.id}`}
               title={recipe.title}
-              className="h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] flex-shrink-0 overflow-hidden rounded-[14px] transition-opacity hover:opacity-80"
+              className={`h-[80px] w-[80px] sm:h-[100px] sm:w-[100px] flex-shrink-0 overflow-hidden rounded-[14px] transition-opacity hover:opacity-80 ${
+                index === 3 ? "hidden min-[1440px]:block" : ""
+              }`}
             >
               <img
                 src={recipe.thumb}

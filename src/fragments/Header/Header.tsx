@@ -27,7 +27,7 @@ export const Header = () => {
   return (
     <header className="px-2 pt-2 md:px-4 md:pt-4 lg:px-5 lg:pt-5">
       <div
-        className={`mx-auto max-w-[1400px] rounded-t-[20px] px-4 py-4 md:rounded-t-[30px] md:px-8 lg:px-[60px] ${
+        className={`mx-auto max-w-[375px] rounded-t-[20px] px-4 py-4 md:max-w-[768px] md:rounded-t-[30px] md:px-8 min-[1440px]:max-w-[1440px]! min-[1440px]:px-[60px]! ${
           onDark ? "bg-main text-white" : "border border-white bg-white text-main"
         }`}
       >

@@ -147,13 +147,13 @@ export function UserTabs() {
   return (
     <div className="flex w-full flex-col">
       {/* Tab headers */}
-      <div className="flex border-b border-gray-200 gap-2 sm:gap-6">
+      <div className="flex border-b border-gray-200 gap-4 sm:gap-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {tabs.map(({ key, label }) => (
           <button
             type="button"
             key={key}
             onClick={() => handleTabChange(key)}
-            className={`relative pb-3 text-[14px] sm:text-[16px] font-bold uppercase transition-colors cursor-pointer ${
+            className={`relative shrink-0 whitespace-nowrap pb-3 text-[14px] sm:text-[16px] font-bold uppercase transition-colors cursor-pointer ${
               activeTab === key ? "text-main" : "text-gray-400 hover:text-main"
             }`}
           >

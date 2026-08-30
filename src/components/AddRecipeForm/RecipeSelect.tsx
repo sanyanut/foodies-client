@@ -113,7 +113,7 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
 
       {/* Спливне вікно (Dropdown menu) з полем пошуку */}
       {isOpen && (
-        <div className="absolute top-[calc(100%+6px)] z-50 w-full rounded-dropdown border border-[#F0F0F0] bg-white p-4 shadow-lg">
+        <div className="absolute top-[calc(100%+6px)] z-50 w-full rounded-dropdown  border border-[#F0F0F0] bg-white p-4 shadow-lg">
           <input
             ref={inputRef}
             type="text"
@@ -121,7 +121,7 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search…"
             aria-label={`Search ${(label || placeholder).toLowerCase()}`}
-            className="mb-3 w-full rounded-dropdown border border-gray/60 px-3.5 py-2 text-[14px] leading-5 text-main outline-none transition-colors placeholder:text-gray focus:border-main md:text-[16px]"
+            className="mb-3 w-full rounded-dropdown border border-gray/60 px-3.5 py-2 text-[14px] leading-5 text-main outline-none transition-colors placeholder:text-main focus:border-main md:text-[16px]"
           />
 
           <ul className="max-h-55 w-full overflow-y-auto">
@@ -138,7 +138,7 @@ export const RecipeSelect: React.FC<RecipeSelectProps> = ({
                     className={`w-full py-1.5 text-left text-[14px] font-medium leading-5 tracking-[-0.28px] transition-colors hover:text-main md:text-[16px] md:leading-6 md:tracking-[-0.32px] ${
                       selectedOption?.id === option.id
                         ? "font-bold text-main"
-                        : "text-gray"
+                        : "text-main"
                     }`}
                   >
                     {option.name}
