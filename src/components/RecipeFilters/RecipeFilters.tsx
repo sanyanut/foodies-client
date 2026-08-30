@@ -93,7 +93,7 @@ const FilterSelect = ({
         aria-expanded={open}
         aria-label={`Filter by ${label.toLowerCase()}`}
         onClick={() => (open ? close() : setOpen(true))}
-        className={`flex h-[56px] w-full items-center justify-between gap-2 rounded-[15px] border bg-white px-[18px] text-left text-[14px] font-medium leading-[20px] tracking-[-0.28px] outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
+        className={`flex h-[56px] w-full items-center justify-between gap-2 rounded-[30px] border bg-white px-[18px] text-left text-[14px] font-medium leading-[20px] tracking-[-0.28px] outline-none transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
           open ? "border-main" : "border-gray/60"
         }`}
       >
@@ -109,7 +109,7 @@ const FilterSelect = ({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-[calc(100%+8px)] z-30 w-full rounded-[15px] border border-gray/40 bg-white p-2 shadow-[0_8px_30px_rgba(5,5,5,0.12)]">
+        <div className="absolute left-0 top-[calc(100%+8px)] z-30 w-full rounded-[30px] border border-gray/40 bg-white p-2 shadow-[0_8px_30px_rgba(5,5,5,0.12)]">
           <input
             ref={inputRef}
             type="text"
@@ -117,7 +117,7 @@ const FilterSelect = ({
             onChange={(event) => setQuery(event.target.value)}
             placeholder={`Search ${label.toLowerCase()}…`}
             aria-label={`Search ${label.toLowerCase()}`}
-            className="mb-2 w-full rounded-[10px] border border-gray/40 px-[14px] py-[8px] text-[14px] text-main outline-none placeholder:text-gray focus:border-main"
+            className="mb-2 w-full rounded-[30px] border border-gray/40 px-[14px] py-[8px] text-[14px] text-main outline-none placeholder:text-gray focus:border-main"
           />
 
           <ul
@@ -186,7 +186,9 @@ export const RecipeFilters = ({
   onIngredientChange,
   onAreaChange,
 }: RecipeFiltersProps) => (
-  <div className={`flex w-full flex-col gap-[14px] md:max-w-[330px] ${className}`}>
+  <div
+    className={`flex w-full flex-col gap-[14px] md:flex-row min-[1440px]:max-w-[330px]! min-[1440px]:flex-col! ${className}`}
+  >
     <FilterSelect
       label="Ingredients"
       value={ingredient}

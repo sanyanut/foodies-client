@@ -16,7 +16,7 @@ export function LongButton({
   ...props
 }: Readonly<ILongButtonProps>) {
   const baseClasses =
-    "w-full rounded-full px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+    "w-full rounded-full px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] transition-colors disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer";
 
   // Стилі, які залежать від обраного варіанту
   const variantClasses = {

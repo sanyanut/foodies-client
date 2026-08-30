@@ -1,16 +1,49 @@
+/* Stepped container matching the app-wide breakpoints: fluid < 375, then a
+   fixed centered width at 375 / 768 / 1440 so content never stretches between
+   breakpoints. (Plain CSS media queries — no Tailwind cascade-ordering quirk.) */
 .container {
-  max-width: 1240px;
+  width: 100%;
+  max-width: 375px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 40px 16px;
   color: #23262a;
 }
 
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 40px 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding: 40px 80px;
+  }
+}
+
+/* Image + info stack on mobile/tablet (so the ingredients grid and text get the
+   full width) and sit side by side only on desktop. */
 .mainLayout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 40px;
   align-items: start;
   margin-bottom: 80px;
+}
+
+@media screen and (min-width: 767px) {
+  .mainLayout {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .mainLayout {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .imageColumn {
@@ -19,9 +52,21 @@
 
 .mainImage {
   width: 100%;
-  height: 480px;
+  height: 280px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 30px;
+}
+
+@media (min-width: 768px) {
+  .mainImage {
+    height: 400px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .mainImage {
+    height: 480px;
+  }
 }
 
 .infoColumn {
@@ -60,7 +105,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 .authorAvatar {
@@ -115,8 +160,9 @@
 .description {
   font-size: 14px;
   line-height: 1.5;
-  color: #333;
-  margin-bottom: 36px;
+  color: #1a1a1a;
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
 .ingredientsSection {
@@ -138,7 +184,7 @@
 .preparationText {
   font-size: 14px;
   line-height: 1.7;
-  color: #333;
+  color: #1a1a1a;
   white-space: pre-line;
   margin-bottom: 32px;
 }
