@@ -1,3 +1,4 @@
+import { Container } from "../Container/Container.tsx";
 import { MainTitle } from "../MainTitle/MainTitle.tsx";
 import { CategoryList } from "../CategoryList/CategoryList.tsx";
 
@@ -10,9 +11,10 @@ interface CategoriesProps {
 }
 
 export const Categories = ({ onSelectCategory, onSelectAll }: CategoriesProps) => (
-  <section
+  <Container
+    as="section"
     aria-label="Categories"
-    className="mx-auto w-full max-w-[1440px] px-[16px] pb-16 pt-16 md:px-[32px] md:pb-20 md:pt-20 lg:px-[80px] lg:pb-24 lg:pt-24"
+    className="pt-16 pb-16 md:pt-20 md:pb-20 min-[1440px]:pt-24! min-[1440px]:pb-24!"
   >
     <MainTitle
       tag="h2"
@@ -21,5 +23,5 @@ export const Categories = ({ onSelectCategory, onSelectAll }: CategoriesProps) =
       description="Discover a limitless world of culinary possibilities and enjoy exquisite recipes that combine taste, style and the warm atmosphere of the kitchen."
     />
     <CategoryList onSelectCategory={onSelectCategory} onSelectAll={onSelectAll} />
-  </section>
+  </Container>
 );

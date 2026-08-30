@@ -84,7 +84,7 @@ export function UserCard() {
             <button
               type="button"
               onClick={() => dispatch(openModal("update-avatar"))}
-              className="absolute -bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition-colors"
+              className="absolute -bottom-3 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full bg-black text-white hover:bg-gray-800 transition-colors cursor-pointer"
             >
               <span className="text-xl font-light leading-none mb-[2px]">+</span>
             </button>
@@ -127,7 +127,7 @@ export function UserCard() {
         </dl>
       </section>
 
-      <div className="w-full max-w-[349px]">{actionButton}</div>
+      <div className="w-full max-w-[349px] cursor-pointer">{actionButton}</div>
     </>
   );
 }

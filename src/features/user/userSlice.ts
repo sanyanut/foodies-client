@@ -149,7 +149,33 @@ export const fetchTabUsers = createAsyncThunk(
       if (Array.isArray(res)) {
         return { users: res, totalPages: 1, page };
       }
-      const list = res.users ?? res.data ?? [];
+      let list = res.users ?? res.data ?? [];
+
+      // Fetch additional details (recipes & count) for each user since backend doesn't provide it
+      list = await Promise.all(
+        list.map(async (user) => {
+          try {
+            const recipesRes = await apiRequest<{ data: TabRecipeItem[]; total: number }>(
+              `/users/${user.id}/recipes?page=1&limit=4`,
+              { auth: true },
+            );
+            return {
+              ...user,
+              recipesCount: recipesRes.total ?? 0,
+              // Map to the format expected by FollowUserCard
+              recipes: (recipesRes.data || []).map((r) => ({
+                id: r.id ?? r._id ?? "",
+                thumb: r.thumb ?? "",
+                title: r.title ?? "",
+              })),
+            };
+          } catch (e) {
+            console.error(`Failed to fetch recipes for user ${user.id}:`, e);
+            return user;
+          }
+        }),
+      );
+
       return { users: list, totalPages: res.totalPages ?? 1, page };
     } catch (err) {
       return rejectWithValue(

@@ -56,7 +56,7 @@ export const CookingTime: React.FC = () => {
           <Icon
             name="minus"
             className={`h-4 w-4 transition-colors duration-200 md:h-6 md:w-6 ${
-              isMin ? "text-gray" : "text-gray group-hover:text-main"
+              isMin ? "text-gray" : "text-main group-hover:text-main"
             }`}
           />
         </button>
@@ -85,7 +85,7 @@ export const CookingTime: React.FC = () => {
           <Icon
             name="plus"
             className={`h-4 w-4 transition-colors duration-200 md:h-6 md:w-6 ${
-              isMax ? "text-gray" : "text-gray group-hover:text-main"
+              isMax ? "text-gray" : "text-main group-hover:text-main"
             }`}
           />
         </button>
