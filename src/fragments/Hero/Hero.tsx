@@ -31,7 +31,7 @@ export const Hero = () => {
         <button
           type="button"
           onClick={handleAddRecipe}
-          className="relative mt-8 rounded-full border border-white px-6 py-3 text-[14px] font-bold uppercase tracking-[-0.02em] transition-colors hover:bg-white hover:text-main md:mt-10 md:px-8 md:py-4 md:text-[16px]"
+          className="relative mt-8 rounded-full border border-white px-6 py-3 text-[14px] font-bold uppercase tracking-[-0.02em] transition-colors hover:bg-white hover:text-main md:mt-10 md:px-8 md:py-4 md:text-[16px] cursor-pointer"
         >
           Add recipe
         </button>

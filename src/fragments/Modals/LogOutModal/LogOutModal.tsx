@@ -38,14 +38,14 @@ export const LogOutModal = () => {
             type="button"
             onClick={handleLogout}
             disabled={pending}
-            className="w-full rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray"
+            className="w-full rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray cursor-pointer"
           >
             {pending ? "Logging out…" : "Log out"}
           </button>
           <button
             type="button"
             onClick={() => dispatch(closeModal())}
-            className="w-full rounded-full border border-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-main transition-colors hover:bg-main hover:text-white"
+            className="w-full rounded-full border border-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-main transition-colors hover:bg-main hover:text-white cursor-pointer"
           >
             Cancel
           </button>

@@ -59,7 +59,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
 
           return (
             <div key={recipeId} className={styles.popularCard}>
-              <Link to={`/recipe/${recipeId}`}>
+              <Link to={`/recipe/${recipeId}`} className={styles.popImageWrap}>
                 <img
                   src={recipe.thumb || "https://via.placeholder.com/150"}
                   alt={recipe.title}
@@ -79,7 +79,12 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                 {/* Блок автора та іконок у кружечках */}
                 <div className={styles.popFooter}>
                   {recipe.owner && (
-                    <div className={styles.authorSection}>
+                    <Link
+                      to={`/user/${recipe.ownerId}`}
+                      className={styles.authorSection}
+                      style={{ textDecoration: "none" }}
+                      aria-label={`View ${recipe.owner.name || "user"}'s profile`}
+                    >
                       {recipe.owner.avatar ? (
                         <img
                           src={recipe.owner.avatar}
@@ -94,7 +99,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                       <span className={styles.authorName}>
                         {recipe.owner.name || "User"}
                       </span>
-                    </div>
+                    </Link>
                   )}
 
                   {/* Кнопки у кружечках відповідно до макета */}

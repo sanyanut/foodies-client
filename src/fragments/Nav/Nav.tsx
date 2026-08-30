@@ -19,7 +19,7 @@ export const Nav = ({ authed, variant = "horizontal", onNavigate }: NavProps) =>
   const dispatch = useAppDispatch();
 
   const itemClass = (isActive: boolean) =>
-    `inline-flex items-center rounded-full border px-4 py-3 font-bold uppercase tracking-[-0.02em] transition-colors ${
+    `inline-flex items-center rounded-full border px-4 py-3 font-bold uppercase tracking-[-0.02em] transition-colors cursor-pointer ${
       isActive ? "border-gray" : "border-transparent hover:opacity-70"
     } ${variant === "vertical" ? "text-[14px]" : "text-[12px]"}`;
 

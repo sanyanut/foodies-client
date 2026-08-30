@@ -8,6 +8,7 @@
   font-weight: 600;
   margin-bottom: 32px;
   color: #050505;
+  text-transform: uppercase;
 }
 
 .popularGrid {
@@ -29,19 +30,26 @@
   flex-direction: column;
   text-decoration: none;
   /*box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);*/
-  transition: transform 0.2s ease;
 }
 
-.popularCard:hover {
-  transform: translateY(-4px);
+/* Image zooms slightly on card hover — same effect as the Recipes cards
+   (transition-transform duration-300 group-hover:scale-[1.02]). */
+.popImageWrap {
+  display: block;
+  overflow: hidden;
+  border-radius: 30px;
+  margin-bottom: 16px;
 }
 
 .popImage {
   width: 100%;
   height: 275px;
-  margin-bottom: 16px;
   object-fit: cover;
-  border-radius: 30px;
+  transition: transform 0.3s ease;
+}
+
+.popularCard:hover .popImage {
+  transform: scale(1.02);
 }
 
 .popContent {
@@ -95,17 +103,20 @@
   align-items: center;
   gap: 10px;
 }
+.authorSection:hover .authorName {
+  color: var(--color-gray);
+}
 
 .authorAvatar {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
 .authorAvatarPlaceholder {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background-color: #8baa36;
   color: white;
