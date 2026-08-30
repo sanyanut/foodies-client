@@ -78,8 +78,8 @@ export const RecipePagination = ({
                 onClick={() => onPageChange(item)}
                 className={`flex h-[40px] w-[40px] items-center justify-center rounded-full border text-[14px] font-medium leading-[20px] transition-colors disabled:cursor-default ${
                   isCurrent
-                    ? "border-main text-main"
-                    : "border-transparent text-gray hover:border-gray/60 hover:text-main"
+                    ? "border-main text-main  cursor-pointer"
+                    : "border-transparent text-gray hover:border-gray/60 hover:text-main  cursor-pointer"
                 }`}
               >
                 {item}

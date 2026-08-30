@@ -17,7 +17,7 @@ export const SignUpModal = () => {
         <button
           type="button"
           onClick={() => dispatch(openModal("signin"))}
-          className="font-bold text-main underline-offset-2 hover:underline"
+          className="font-bold text-main underline underline-offset-1"
         >
           Sign in
         </button>

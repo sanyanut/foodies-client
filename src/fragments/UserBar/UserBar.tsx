@@ -39,7 +39,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 rounded-full bg-dark py-0 pl-0 pr-4 text-white transition-colors hover:bg-dark"
+        className="flex items-center gap-2 rounded-full bg-dark py-0 pl-0 pr-4 text-white transition-colors hover:bg-dark cursor-pointer"
         aria-haspopup="menu"
         aria-expanded={open}
       >
@@ -81,7 +81,7 @@ export const UserBar = ({ onAction }: UserBarProps) => {
               dispatch(openModal("logout"));
               onAction?.();
             }}
-            className="flex items-center gap-[2px] text-left text-[12px] font-bold uppercase tracking-[-0.24px] transition-colors hover:text-white/60"
+            className="flex items-center gap-[2px] text-left text-[12px] font-bold uppercase tracking-[-0.24px] transition-colors hover:text-white/60 cursor-pointer"
           >
             Log out
             <Icon name="arrow-up-right" className="h-[18px] w-[18px]" />

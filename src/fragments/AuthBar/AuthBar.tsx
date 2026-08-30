@@ -33,7 +33,7 @@ export const AuthBar = ({ onAction, className = "", onDark = true }: AuthBarProp
     <button
       type="button"
       onClick={() => select(modal)}
-      className={`relative z-10 rounded-full px-6 py-2 text-[14px] font-medium uppercase tracking-[-0.02em] transition duration-300 active:scale-95 ${
+      className={`relative z-10 rounded-full px-6 py-2 text-[14px] font-medium uppercase tracking-[-0.02em] transition duration-300 active:scale-95 cursor-pointer ${
         active === modal ? "text-white" : "text-main"
       }`}
     >
@@ -50,7 +50,7 @@ export const AuthBar = ({ onAction, className = "", onDark = true }: AuthBarProp
       {/* Sliding thumb: sits at the left segment, shifts right for "signup". */}
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-dark transition-transform duration-300 ease-out ${
+        className={`pointer-events-none absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-dark transition-transform duration-300 ease-out cursor-pointer ${
           active === "signup" ? "translate-x-full" : "translate-x-0"
         }`}
       />

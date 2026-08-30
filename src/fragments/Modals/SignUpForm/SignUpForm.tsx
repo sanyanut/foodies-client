@@ -61,7 +61,7 @@ export const SignUpForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mt-[10px] flex w-full items-center justify-center gap-2 rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray"
+            className="mt-[10px] flex w-full items-center justify-center gap-2 rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray cursor-pointer"
           >
             {isSubmitting && <Icon name="loader" className="h-5 w-5 animate-spin" />}
             {isSubmitting ? "Creating…" : "Create"}

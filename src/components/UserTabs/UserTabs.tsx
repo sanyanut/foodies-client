@@ -86,6 +86,10 @@ export function UserTabs() {
     id,
     isMyProfile,
     viewedProfile?.id,
+    // Re-fetch when the current user follows/unfollows the viewed profile — their
+    // own membership in that profile's followers list changes, so the Followers
+    // tab must refresh (previously it only updated after a full page reload).
+    viewedProfile?.followersCount,
     authUser?.id,
     tabCurrentPage,
     dispatch,

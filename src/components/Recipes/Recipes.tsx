@@ -100,6 +100,12 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
     setPage(1);
   };
 
+  const handlePageChange = (nextPage: number) => {
+    setPage(nextPage);
+    // Scroll back to the top of the block so the loading state is visible.
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   useEffect(() => {
     if (!canFetch) return;
 
@@ -137,6 +143,12 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
 
   const title = categoryName ?? "All categories";
 
+  // Shared spinner for both the initial (category → Recipes) load and the
+  // pagination overlay, so the loading indicator is consistent.
+  const spinner = (
+    <Icon name="loader" className="h-12 w-12 animate-spin text-main md:h-14 md:w-14" />
+  );
+
   return (
     <section
       ref={sectionRef}
@@ -146,9 +158,10 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
       <button
         type="button"
         onClick={onBack}
-        className="inline-flex items-center text-[12px] font-bold uppercase leading-[18px] tracking-[-0.24px] transition-colors hover:text-gray"
+        className="inline-flex items-center gap-[4px] md:gap-[6px] text-[12px] text-main md:text-[14px] font-bold uppercase leading-[16px] md:leading-[18px] tracking-[-0.24px] transition-colors hover:text-gray"
       >
-        ← Back
+        <Icon name="arrow-left" className="h-4 w-4" />
+        Back
       </button>
 
       <MainTitle
@@ -180,11 +193,8 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
 
         <div aria-busy={isLoading}>
           {isLoading && !catalog && (
-            <div
-              role="status"
-              className="flex min-h-[360px] items-center justify-center text-gray"
-            >
-              <Icon name="loader" className="h-12 w-12 animate-spin md:h-14 md:w-14" />
+            <div role="status" aria-label="Loading recipes" className="min-h-[70vh]">
+              <div className="sticky top-[45vh] flex justify-center">{spinner}</div>
               <span className="sr-only">Loading recipes…</span>
             </div>
           )}
@@ -198,10 +208,31 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
           {catalog && !error && (
             <>
               {catalog.data.length > 0 ? (
-                <RecipeList
-                  recipes={catalog.data}
-                  className={`transition-opacity ${isLoading ? "opacity-50" : "opacity-100"}`}
-                />
+                <div className="relative">
+                  <RecipeList
+                    recipes={catalog.data}
+                    className={`transition-opacity ${
+                      isLoading ? "pointer-events-none opacity-40" : "opacity-100"
+                    }`}
+                  />
+
+                  {/* Pagination loader: covers the (dimmed, non-clickable) list so
+                      stale recipes can't be opened while the next page loads.
+                      Centered over the block, and `sticky` keeps the spinner in
+                      view when the list is taller than the viewport. */}
+                  {isLoading && (
+                    <div
+                      role="status"
+                      aria-label="Loading recipes"
+                      className="absolute inset-0 z-10 bg-white/50"
+                    >
+                      <div className="sticky top-[45vh] flex justify-center">
+                        {spinner}
+                      </div>
+                      <span className="sr-only">Loading recipes…</span>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <p className="text-[14px] text-gray">No recipes found.</p>
               )}
@@ -211,7 +242,7 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
                   currentPage={catalog.page}
                   totalPages={catalog.totalPages}
                   disabled={isLoading}
-                  onPageChange={setPage}
+                  onPageChange={handlePageChange}
                 />
               </div>
             </>
