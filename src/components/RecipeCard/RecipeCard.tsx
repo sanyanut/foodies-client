@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { openModal } from "../../features/ui/modalSlice.ts";
@@ -21,6 +22,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const navigate = useNavigate();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isFavorite = useAppSelector((state) => state.favorites.ids.includes(recipe.id));
+  const isToggling = useAppSelector((state) => state.favorites.togglingId === recipe.id);
 
   const imageUrl = recipe.thumb ?? recipe.preview;
   const ownerInitial = recipe.owner.name.trim().charAt(0).toUpperCase() || "?";
@@ -30,9 +32,15 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
     else dispatch(openModal("signin"));
   };
 
-  const handleFavoriteClick = () => {
-    if (isAuthenticated) void dispatch(toggleFavorite(recipe.id));
-    else dispatch(openModal("signin"));
+  const handleFavoriteClick = async () => {
+    if (!isAuthenticated) {
+      dispatch(openModal("signin"));
+      return;
+    }
+    const result = await dispatch(toggleFavorite(recipe.id));
+    if (toggleFavorite.rejected.match(result)) {
+      toast.error((result.payload as string) ?? "Failed to update favorites");
+    }
   };
 
   return (
@@ -102,8 +110,9 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
                 : `Add ${recipe.title} to favorites`
             }
             aria-pressed={isFavorite}
+            disabled={isToggling}
             onClick={handleFavoriteClick}
-            className={`flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors ${
+            className={`flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
               isFavorite
                 ? "border-main bg-main text-white"
                 : "border-gray/60 bg-white text-main hover:border-main"

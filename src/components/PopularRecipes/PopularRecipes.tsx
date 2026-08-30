@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import type { Recipe } from "../../features/recipes/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleFavorite } from "../../features/recipes/favoritesSlice";
@@ -27,6 +28,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const favoriteIds = useAppSelector((state) => state.favorites.ids);
+  const togglingId = useAppSelector((state) => state.favorites.togglingId);
 
   if (!recipes || recipes.length === 0) return null;
 
@@ -37,13 +39,18 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
         {recipes.slice(0, 4).map((recipe) => {
           const recipeId = recipe.id || recipe._id;
           const isFavorite = recipeId ? favoriteIds.includes(recipeId) : false;
+          const isToggling = recipeId ? togglingId === recipeId : false;
 
-          const handleToggleFavorite = () => {
+          const handleToggleFavorite = async () => {
             if (!isAuthenticated) {
               dispatch(openModal("signin"));
               return;
             }
-            if (recipeId) void dispatch(toggleFavorite(recipeId));
+            if (!recipeId) return;
+            const result = await dispatch(toggleFavorite(recipeId));
+            if (toggleFavorite.rejected.match(result)) {
+              toast.error((result.payload as string) ?? "Failed to update favorites");
+            }
           };
 
           const shortDescription = recipe.instructions
@@ -97,6 +104,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                         isFavorite ? styles.iconButtonActive : ""
                       }`}
                       type="button"
+                      disabled={isToggling}
                       onClick={handleToggleFavorite}
                       aria-pressed={isFavorite}
                       aria-label={
