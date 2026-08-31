@@ -158,7 +158,7 @@ export const Recipes = ({ categoryName, onBack }: RecipesProps) => {
       <button
         type="button"
         onClick={onBack}
-        className="inline-flex items-center gap-[4px] md:gap-[6px] text-[12px] text-main md:text-[14px] font-bold uppercase leading-[16px] md:leading-[18px] tracking-[-0.24px] transition-colors hover:text-gray"
+        className="inline-flex items-center gap-[4px] md:gap-[6px] text-[12px] text-main md:text-[14px] font-bold uppercase leading-[16px] md:leading-[18px] tracking-[-0.24px] transition-colors hover:text-gray cursor-pointer"
       >
         <Icon name="arrow-left" className="h-4 w-4" />
         Back
