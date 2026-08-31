@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks.ts";
 import { openModal } from "../../features/ui/modalSlice.ts";
@@ -21,6 +22,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
   const navigate = useNavigate();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const isFavorite = useAppSelector((state) => state.favorites.ids.includes(recipe.id));
+  const isToggling = useAppSelector((state) => state.favorites.togglingId === recipe.id);
 
   const imageUrl = recipe.thumb ?? recipe.preview;
   const ownerInitial = recipe.owner.name.trim().charAt(0).toUpperCase() || "?";
@@ -30,23 +32,29 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
     else dispatch(openModal("signin"));
   };
 
-  const handleFavoriteClick = () => {
-    if (isAuthenticated) void dispatch(toggleFavorite(recipe.id));
-    else dispatch(openModal("signin"));
+  const handleFavoriteClick = async () => {
+    if (!isAuthenticated) {
+      dispatch(openModal("signin"));
+      return;
+    }
+    const result = await dispatch(toggleFavorite(recipe.id));
+    if (toggleFavorite.rejected.match(result)) {
+      toast.error((result.payload as string) ?? "Failed to update favorites");
+    }
   };
 
   return (
-    <article className="flex min-w-0 flex-col">
+    <article className="group/card flex min-w-0 flex-col">
       <Link
         to={`/recipe/${recipe.id}`}
-        className="group block aspect-square overflow-hidden rounded-[20px] bg-gray/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
+        className="block aspect-square overflow-hidden rounded-[20px] bg-gray/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
       >
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={recipe.title}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover/card:scale-[1.02]"
           />
         ) : (
           <span className="flex h-full w-full items-center justify-center text-[14px] font-medium text-gray">
@@ -80,10 +88,10 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
               src={recipe.owner.avatar}
               alt=""
               loading="lazy"
-              className="h-[32px] w-[32px] shrink-0 rounded-full object-cover"
+              className="h-[40px] w-[40px] shrink-0 rounded-full object-cover"
             />
           ) : (
-            <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-gray/30 text-[12px] font-bold">
+            <span className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full bg-gray/30 text-[12px] font-bold">
               {ownerInitial}
             </span>
           )}
@@ -102,8 +110,9 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
                 : `Add ${recipe.title} to favorites`
             }
             aria-pressed={isFavorite}
+            disabled={isToggling}
             onClick={handleFavoriteClick}
-            className={`flex h-[36px] w-[36px] items-center justify-center rounded-full border transition-colors ${
+            className={`flex h-[42px] w-[42px] items-center justify-center rounded-full border transition-colors cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
               isFavorite
                 ? "border-main bg-main text-white"
                 : "border-gray/60 bg-white text-main hover:border-main"
@@ -115,7 +124,7 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
           <Link
             to={`/recipe/${recipe.id}`}
             aria-label={`Open ${recipe.title}`}
-            className="flex h-[36px] w-[36px] items-center justify-center rounded-full border border-gray/60 text-main transition-colors hover:border-main focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
+            className="flex h-[42px] w-[42px] items-center justify-center rounded-full border border-gray/60 text-main transition-colors hover:border-main focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main"
           >
             <Icon name="arrow-up-right" className="h-[18px] w-[18px]" />
           </Link>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import type { Recipe } from "../../features/recipes/recipeSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleFavorite } from "../../features/recipes/favoritesSlice";
@@ -27,6 +28,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const favoriteIds = useAppSelector((state) => state.favorites.ids);
+  const togglingId = useAppSelector((state) => state.favorites.togglingId);
 
   if (!recipes || recipes.length === 0) return null;
 
@@ -37,13 +39,18 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
         {recipes.slice(0, 4).map((recipe) => {
           const recipeId = recipe.id || recipe._id;
           const isFavorite = recipeId ? favoriteIds.includes(recipeId) : false;
+          const isToggling = recipeId ? togglingId === recipeId : false;
 
-          const handleToggleFavorite = () => {
+          const handleToggleFavorite = async () => {
             if (!isAuthenticated) {
               dispatch(openModal("signin"));
               return;
             }
-            if (recipeId) void dispatch(toggleFavorite(recipeId));
+            if (!recipeId) return;
+            const result = await dispatch(toggleFavorite(recipeId));
+            if (toggleFavorite.rejected.match(result)) {
+              toast.error((result.payload as string) ?? "Failed to update favorites");
+            }
           };
 
           const shortDescription = recipe.instructions
@@ -52,7 +59,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
 
           return (
             <div key={recipeId} className={styles.popularCard}>
-              <Link to={`/recipe/${recipeId}`}>
+              <Link to={`/recipe/${recipeId}`} className={styles.popImageWrap}>
                 <img
                   src={recipe.thumb || "https://via.placeholder.com/150"}
                   alt={recipe.title}
@@ -72,7 +79,12 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                 {/* Блок автора та іконок у кружечках */}
                 <div className={styles.popFooter}>
                   {recipe.owner && (
-                    <div className={styles.authorSection}>
+                    <Link
+                      to={`/user/${recipe.ownerId}`}
+                      className={styles.authorSection}
+                      style={{ textDecoration: "none" }}
+                      aria-label={`View ${recipe.owner.name || "user"}'s profile`}
+                    >
                       {recipe.owner.avatar ? (
                         <img
                           src={recipe.owner.avatar}
@@ -87,7 +99,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                       <span className={styles.authorName}>
                         {recipe.owner.name || "User"}
                       </span>
-                    </div>
+                    </Link>
                   )}
 
                   {/* Кнопки у кружечках відповідно до макета */}
@@ -97,6 +109,7 @@ export const PopularRecipes: React.FC<PopularRecipesProps> = ({ recipes }) => {
                         isFavorite ? styles.iconButtonActive : ""
                       }`}
                       type="button"
+                      disabled={isToggling}
                       onClick={handleToggleFavorite}
                       aria-pressed={isFavorite}
                       aria-label={

@@ -69,8 +69,21 @@ export const MobileMenu = ({ authed, onClose }: MobileMenuProps) => {
             <Icon name="close" className="h-7 w-7" />
           </button>
         </div>
-        <div className="mt-10">
+        <div className="flex flex-1 items-center justify-center">
           <Nav authed={authed} variant="vertical" onNavigate={close} />
+        </div>
+        <div className="flex h-52 shrink-0 -translate-y-28 items-center justify-center gap-4">
+          <img
+          src="images/hero/dish-small.jpg"
+          alt=""
+          className="h-20 w-20 rotate-6 rounded-xl object-cover"
+          />
+
+          <img
+          src="images/hero/dish-main.jpg"
+          alt=""
+          className="h-40 w-48 -rotate-6 rounded-2xl object-cover"
+          />
         </div>
       </div>
     </div>,

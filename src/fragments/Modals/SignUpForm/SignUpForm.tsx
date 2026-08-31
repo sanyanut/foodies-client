@@ -7,6 +7,7 @@ import { register } from "../../../features/auth/authSlice.ts";
 import { closeModal } from "../../../features/ui/modalSlice.ts";
 import { TextField } from "../AuthField/TextField.tsx";
 import { PasswordField } from "../AuthField/PasswordField.tsx";
+import { Icon } from "../../../shared/Icon/Icon.tsx";
 
 // Yup rules mirror the backend Zod schema (auth.schemas.ts):
 // name 2–64, valid email, password 8–128.
@@ -60,8 +61,9 @@ export const SignUpForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="mt-[10px] w-full rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray"
+            className="mt-[10px] flex w-full items-center justify-center gap-2 rounded-full bg-main px-6 py-4 text-[16px] font-bold uppercase tracking-[-0.02em] text-white transition-colors hover:bg-dark disabled:cursor-not-allowed disabled:bg-gray cursor-pointer"
           >
+            {isSubmitting && <Icon name="loader" className="h-5 w-5 animate-spin" />}
             {isSubmitting ? "Creating…" : "Create"}
           </button>
         </Form>

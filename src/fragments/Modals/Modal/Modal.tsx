@@ -55,7 +55,7 @@ export const Modal = ({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-5 top-5 text-main transition-colors hover:text-gray md:right-[42px] md:top-[42px]"
+          className="absolute right-5 top-5 text-main transition-colors hover:text-gray md:right-[42px] md:top-[42px] cursor-pointer"
         >
           <Icon name="close" className="h-7 w-7" />
         </button>

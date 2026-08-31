@@ -12,6 +12,7 @@ import {
 import { RecipePreview } from "../RecipePreview/RecipePreview";
 import { FollowUserCard } from "../FollowUserCard/FollowUserCard";
 import { ListPagination } from "../ListPagination/ListPagination";
+import { Icon } from "../../shared/Icon/Icon";
 
 type TabName = "recipes" | "favorites" | "followers" | "following";
 
@@ -85,6 +86,10 @@ export function UserTabs() {
     id,
     isMyProfile,
     viewedProfile?.id,
+    // Re-fetch when the current user follows/unfollows the viewed profile — their
+    // own membership in that profile's followers list changes, so the Followers
+    // tab must refresh (previously it only updated after a full page reload).
+    viewedProfile?.followersCount,
     authUser?.id,
     tabCurrentPage,
     dispatch,
@@ -167,7 +172,15 @@ export function UserTabs() {
 
       {/* Tab content */}
       <div className="mt-4 flex flex-col">
-        {isLoading && <div className="py-8 text-center text-gray-500">Loading...</div>}
+        {isLoading && (
+          <div
+            role="status"
+            className="flex min-h-[320px] items-center justify-center text-gray-500"
+          >
+            <Icon name="loader" className="h-12 w-12 animate-spin" />
+            <span className="sr-only">Loading...</span>
+          </div>
+        )}
         {tabError && <div className="py-8 text-center text-red-500">{tabError}</div>}
 
         {showContent && isRecipeTab && (

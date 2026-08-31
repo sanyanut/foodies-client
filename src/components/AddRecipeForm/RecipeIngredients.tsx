@@ -5,22 +5,33 @@ import { RecipeSelect } from "./RecipeSelect";
 import { Icon } from "../../shared/Icon/Icon";
 import type { RecipeFormValues, AddedIngredient } from "./recipeValidationSchema";
 
-/** Added-ingredient thumbnail with a fallback: shows the 🥗 emoji when there is
- *  no image URL or when the image fails to load (broken/expired link) — instead
- *  of the browser's broken-image icon. */
+/** Added-ingredient thumbnail styled like the RecipeDetails ingredient box, but
+ *  Tailwind-only: a bordered rounded frame holding the image (object-contain).
+ *  Falls back to the 🥗 emoji when there is no URL or the image fails to load. */
 const IngredientThumb: React.FC<{ src?: string; name: string }> = ({ src, name }) => {
   const [failed, setFailed] = useState(false);
 
+  const box =
+    "h-[75px] w-[75px] shrink-0 rounded-[18px] border border-[#E0E0E0] md:h-[90px] md:w-[90px] md:rounded-[15px]";
+
   if (!src || failed) {
-    return <span className="text-[22px] md:text-[26px]">🥗</span>;
+    return (
+      <div
+        aria-hidden="true"
+        className={`flex items-center justify-center bg-[#F4F4F4] text-[22px] md:text-[26px] ${box}`}
+      >
+        🥗
+      </div>
+    );
   }
 
   return (
     <img
       src={src}
       alt={name}
-      className="h-full w-full object-cover"
+      loading="lazy"
       onError={() => setFailed(true)}
+      className={`bg-white object-contain p-[6px] ${box}`}
     />
   );
 };
@@ -30,6 +41,9 @@ export const RecipeIngredients: React.FC = () => {
     useFormikContext<RecipeFormValues>();
 
   const ingredientsOptions = useAppSelector((state) => state.lookups.ingredients);
+  const ingredientsLoading = useAppSelector(
+    (state) => state.lookups.status === "loading",
+  );
 
   const isMeasureError = Boolean(touched.currentMeasure && errors.currentMeasure);
   const isIngredientError = Boolean(
@@ -109,6 +123,7 @@ export const RecipeIngredients: React.FC = () => {
             placeholder="Add the ingredient"
             options={ingredientsOptions}
             value={values.currentIngredientId}
+            loading={ingredientsLoading}
             onChange={(option) => {
               setFieldValue("currentIngredientId", option.id, false);
               setFieldError("currentIngredientId", undefined);
@@ -176,25 +191,21 @@ export const RecipeIngredients: React.FC = () => {
         </span>
       )}
 
-      {/* 4. Картки доданих інгредієнтів */}
+      {/* 4. Картки доданих інгредієнтів — вигляд як на RecipeDetails (Tailwind) */}
       {values.ingredients.length > 0 && (
-        <div className="mt-8 flex flex-wrap gap-4 md:mt-10 md:gap-7">
+        <ul className="mt-8 grid grid-cols-2 gap-[16px] md:mt-10 md:grid-cols-3 md:gap-[20px]">
           {values.ingredients.map((item) => (
-            <div
+            <li
               key={item.id}
-              className="relative flex h-18.75 min-w-38.75 items-center rounded-dropdown border border-gray/60 bg-white pr-6.5 md:h-22.5 md:min-w-44.5 md:pr-7.5"
+              className="relative flex items-center gap-[10px] rounded-[16px] bg-white pr-6 md:gap-[14px]"
             >
-              <div className="flex h-18.75 w-18.75 shrink-0 items-center justify-center p-2.5 md:h-22.5 md:w-22.5 md:p-3.75">
-                <div className="flex h-13.75 w-13.75 items-center justify-center overflow-hidden rounded-dropdown bg-[#F7F7F7] md:h-15 md:w-15">
-                  <IngredientThumb src={item.img} name={item.name} />
-                </div>
-              </div>
+              <IngredientThumb src={item.img} name={item.name} />
 
-              <div className="flex flex-col pl-0 md:pl-0">
-                <span className="truncate text-[14px] font-medium leading-5 tracking-[-0.28px] text-main md:text-[16px] md:leading-6 md:tracking-[-0.32px]">
+              <div className="flex min-w-0 flex-col gap-[6px]">
+                <span className="truncate text-[14px] font-medium leading-5 text-main md:text-[16px] md:leading-6">
                   {item.name}
                 </span>
-                <span className="mt-0.5 truncate text-[14px] font-medium leading-5 tracking-[-0.28px] text-gray md:mt-1 md:text-[16px] md:leading-6 md:tracking-[-0.32px]">
+                <span className="truncate text-[14px] font-medium leading-5 text-gray md:text-[16px] md:leading-6">
                   {item.measure}
                 </span>
               </div>
@@ -202,14 +213,14 @@ export const RecipeIngredients: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleRemoveIngredient(item.id)}
-                className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center text-main transition-opacity hover:opacity-60 md:right-2.5 md:top-2.5"
                 aria-label={`Remove ${item.name}`}
+                className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center text-main transition-opacity hover:opacity-60"
               >
-                <Icon name="close" className="h-3 w-3 md:h-3.5 md:w-3.5" />
+                <Icon name="close" className="h-3.5 w-3.5" />
               </button>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

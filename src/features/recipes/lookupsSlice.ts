@@ -60,7 +60,10 @@ const lookupsSlice = createSlice({
       .addCase(fetchLookups.fulfilled, (state, action) => {
         state.categories = action.payload.categories;
         state.ingredients = action.payload.ingredients;
-        state.areas = action.payload.areas;
+        // Areas alphabetically, so the Area filter/select reads as an ordered list.
+        state.areas = [...action.payload.areas].sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
         state.status = "ready";
       })
       .addCase(fetchLookups.rejected, (state, action) => {
