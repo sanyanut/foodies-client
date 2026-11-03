@@ -3,7 +3,9 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 import type SplideClass from "@splidejs/splide";
 import "@splidejs/react-splide/css";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// `??` (not `||`) so an empty VITE_API_URL means "same origin" — used when the
+// app and the API sit behind one load balancer.
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
 
 interface Testimonial {
   id: string;
@@ -100,7 +102,6 @@ export const Testimonials: React.FC = () => {
         ))}
       </Splide>
 
-      
       <div className="mt-8 flex h-4 items-center justify-center gap-3">
         {testimonials.map((_, index) => (
           <button
